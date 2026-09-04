@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ClearDrop - Mapas</title>
+<meta name="description" content="ClearDrop busca conectar y dar voz a las comunidades afectadas por problemas del agua"/>
+<!--<meta content="img/Logosinfondo.png" property="og:image"/>-->
+
+<!-- Método moderno recomendado (PNG) -->
+<link rel="icon" type="image/png" href="img/ClearDrop-icon-250.png">
+
+<!-- Método clásico para compatibilidad (ICO) 
+<link rel="shortcut icon" href="img/ClearDrop logof.ico" type="image/x-icon">   -->
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+
+<!-- Iconos (Lucide, vía CDN, solo para no dibujar cada icono a mano) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+  <!-- ============================================================
+       MAPA: Leaflet + OpenStreetMap (gratuito, sin API key)
+       ============================================================ -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+
+  <link rel="stylesheet" href="mapa.css"/>
+  <link rel="stylesheet" href="style.css">
+
+
+</head>
+<body>
+
+<!-- =========================================================
+
+NAVBAR
+
+========================================================= -->
+<nav class="navbar">
+<div class="container">
+
+<img src="img/Captura_de_pantalla_2026-05-28_153221-removebg-preview.png" class="nav-logo-nombre" alt="ClearDrop">
+
+<ul class="nav-links">
+
+  <!-- Inserta esto donde quieras el botón -->
+  <button id="langToggle" class="lang-toggle" aria-pressed="false" aria-label="Cambiar idioma">
+    <!-- Icono EN (puedes reemplazar por tu SVG o font-icon) -->
+      <span class="icon icon--en" aria-hidden="true">
+        <!-- Simple bandera/ico EN (UK/US style minimal) -->
+        <img src="img/english-icon.png">
+      </span>
+
+    <!-- Icono ES -->
+      <span class="icon icon--es" aria-hidden="true">
+        <img src="img/español-icon.png">
+      </span>
+
+    <span class="label">EN</span>
+  </button>
+
+<!-- Opcional: incluye los archivos CSS y JS vinculados -->
+<link rel="stylesheet" href="lang-toggle.css">
+<script src="lang-toggle.js" defer></script>
+
+  <li><a href="index.html">Inicio</a></li>
+  <li><a href="noticias.html">Noticias</a></li>
+  <li><a href="mapa.html" class="active">Mapas</a></li>
+  <li><a href="educacion.html">Educación</a></li>
+
+  <!-- Grupo: Comunidad y Voluntariado -->
+  <li class="nav-dropdown">
+    <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+      Únete
+      <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <ul class="nav-dropdown-menu">
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="voluntariado.html">Voluntariado</a></li>
+    </ul>
+  </li>
+
+  <li><a href="tienda.html">Tienda</a></li>
+  <li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+
+  <!-- Grupo: Mi perfil -->
+  <li class="nav-dropdown">
+  <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+    <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <ul class="nav-dropdown-perfil">
+    <li><p>noe.jn@gmail.com</p></li>
+    <li><a href="voluntariado.hmtl">Mi huella</a></li>
+    <li><a href="#configuracion">Configuración</a></li>
+  </ul>
+  </li>
+</ul>
+</div>
+</nav>
+
+<!-- Menú de hamburguesa para dispositivos móviles -->
+<button class="nav-hamburger" id="menuBtn" aria-label="Abrir menú">
+<span></span><span></span><span></span>
+</button>
+</ul>
+</div>
+</nav>
+
+<!-- Interfaz del nav en móviles -->
+<div class="mobile-nav" id="mobileNav">
+<button class="mobile-nav-close" id="menuClose">✕</button>
+<a href="index.html">Inicio</a>
+<a href="noticias.html">Noticias</a>
+<a href="mapa.html">Mapa</a>
+<a href="educacion.html">Educación</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+    Comunidad
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="comunidad.html">Comunidad</a>
+    <a href="voluntariado.html">Voluntariado</a>
+  </div>
+</div>
+
+<a href="tienda.html">Tienda</a>
+<a href="sobre-nosotros.html">Sobre nosotros</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+     <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="#cuenta">Mi cuenta</a>
+    <a href="#agregar">Agregar cuenta</a>
+    <a href="#cerrar-sesion">Cerrar sesión</a>
+  </div>
+</div>
+</div>
+
+  <!-- ============================================================
+       CONTENEDOR PRINCIPAL: SIDEBAR + MAPA
+       ============================================================ -->
+  <div class="app-layout">
+
+    <!-- ----------------------------------------------------------
+         SIDEBAR IZQUIERDO: PANEL DE FILTROS
+         ---------------------------------------------------------- -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__header">
+        <div>
+          <h2>Filtros</h2>
+          <p class="sidebar__subtitle">Selecciona las afectaciones del agua que deseas visualizar.</p>
+        </div>
+        <button class="link-btn" id="toggleSidebarBtn">
+          Ocultar <i data-lucide="chevron-up"></i>
+        </button>
+      </div>
+
+      <!-- Lista de filtros-->
+       <ul class="filter-list" id="filterList">
+
+  <li class="filter-item" data-filter="sin_suministro">
+    <span class="filter-icon filter-icon--red">
+      <img src="img/no hay agua.png" alt="Sin suministro de agua" class="filter-icon__img">
+    </i></span>
+    <div class="filter-copy">
+      <div class="filter-copy__title">
+        Sin suministro de agua <span class="filter-count">4</span>
+        <i data-lucide="info" class="info-hint"></i>
+      </div>
+      <p>Ausencia total del suministro de agua potable.</p>
+    </div>
+    <button class="switch switch--on" role="switch" aria-checked="true"></button>
+  </li>
+
+  <li class="filter-item" data-filter="contaminacion">
+    <span class="filter-icon filter-icon--purple">
+      <img src="img/water contaminada.png" alt="Contaminación del agua" class="filter-icon__img">
+    </span>
+    <div class="filter-copy">
+      <div class="filter-copy__title">
+        Contaminación del agua <span class="filter-count">6</span>
+        <i data-lucide="info" class="info-hint"></i>
+      </div>
+      <p>Alteración de la calidad del agua por agentes contaminantes.</p>
+    </div>
+    <button class="switch switch--on" role="switch" aria-checked="true"></button>
+  </li>
+
+  <li class="filter-item" data-filter="baja_presion">
+    <span class="filter-icon filter-icon--orange">
+      <img src="img/poca presión.png" alt="Baja presión" class="filter-icon__img--bajap">
+    </span>
+    <div class="filter-copy">
+      <div class="filter-copy__title">
+        Baja presión <span class="filter-count">6</span>
+        <i data-lucide="info" class="info-hint"></i>
+      </div>
+      <p>Suministro de agua con presión inferior a la normal.</p>
+    </div>
+    <button class="switch switch--on" role="switch" aria-checked="true"></button>
+  </li>
+
+  <li class="filter-item" data-filter="fugas">
+    <span class="filter-icon filter-icon--brown">
+      <img src="img/fuga de agua.png" alt="Fugas de agua" class="filter-icon__img">
+    </span>
+    <div class="filter-copy">
+      <div class="filter-copy__title">
+        Fugas de agua <span class="filter-count">1</span>
+        <i data-lucide="info" class="info-hint"></i>
+      </div>
+      <p>Pérdidas de agua por daños en tuberías o conexiones.</p>
+    </div>
+    <button class="switch switch--on" role="switch" aria-checked="true"></button>
+  </li>
+
+  <li class="filter-item" data-filter="inundaciones">
+    <span class="filter-icon filter-icon--blue">
+      <img src="img/inundaciones.png" alt="Inundaciones" class="filter-icon__img">
+    </span>
+    <div class="filter-copy">
+      <div class="filter-copy__title">
+        Inundaciones <span class="filter-count">4</span>
+        <i data-lucide="info" class="info-hint"></i>
+      </div>
+      <p>Desbordamientos o acumulación de agua que generan afectaciones.</p>
+    </div>
+    <button class="switch switch--on" role="switch" aria-checked="true"></button>
+  </li>
+
+  <li class="filter-item" data-filter="ecosistemas">
+    <span class="filter-icon filter-icon--green filter-icon--ecosistemas">
+      <img src="img/ecosistemas.png" alt="Ecosistemas" class="filter-icon__img filter-icon__img--ecosistemas">
+    </span>
+    <div class="filter-copy">
+      <div class="filter-copy__title">
+        Afectación a ecosistemas <span class="filter-count">3</span>
+        <i data-lucide="info" class="info-hint"></i>
+      </div>
+      <p>Impacto en ríos, cuencas y biodiversidad</p>
+    </div>
+    <button class="switch switch--on" role="switch" aria-checked="true"></button>
+  </li>
+
+  <li class="filter-item" data-filter="otros">
+    <span class="filter-icon filter-icon--green filter-icon--otros">
+      <img src="img/otro-editado para filtro.png" alt="Otros" class="filter-icon__img--otros">
+    </span>
+    <div class="filter-copy">
+      <div class="filter-copy__title">
+        Otros<span class="filter-count">1</span>
+        <i data-lucide="info" class="info-hint"></i>
+      </div>
+      <p>Reportes relacionados con el servicio que no pertenecen a las categorías anteriores.</p>
+    </div>
+    <button class="switch switch--on" role="switch" aria-checked="true"></button>
+  </li>
+</ul>
+      
+
+      <button class="clear-filters-btn" id="clearFiltersBtn">
+        <i data-lucide="refresh-cw"></i> Limpiar filtros
+      </button>
+
+      <!-- Tarjeta informativa inferior del sidebar -->
+      <div class="promo-card">
+        <span class="promo-card__icon"><i data-lucide="droplet"></i></span>
+        <h3>Explora Chiriquí</h3>
+        <p>Descubre las afectaciones del agua en tu comunidad y contribuye a la solución.</p>
+      </div>
+    </aside>
+
+    <!-- ----------------------------------------------------------
+         PANEL PRINCIPAL: MAPA
+         ---------------------------------------------------------- -->
+    <main class="map-panel">
+
+      <div class="map-panel__header">
+        <div>
+          <h1>Mapa de Chiriquí</h1>
+          <p>Explora las afectaciones del agua en la provincia</p>
+        </div>
+
+        <div class="map-panel__viewToggle">
+          <button class="view-btn view-btn--active" data-view="mapa">
+            <i data-lucide="map"></i> Mapa
+          </button>
+          <button class="view-btn" data-view="satelite">
+            <i data-lucide="satellite"></i> Satélite
+          </button>
+          <button class="view-btn" data-view="hibrido">
+            <i data-lucide="layers"></i> Híbrido
+          </button>
+        </div>
+
+        <button class="legend-btn" id="legendBtn">
+          <i data-lucide="map-pinned"></i>
+        </button>
+      </div>
+
+      <!-- ==========================================================
+           CONTENEDOR DEL MAPA
+           ==========================================================
+           Mapa real con Leaflet + OpenStreetMap (gratuito, sin API key).
+           Leaflet se "monta" dentro de #leafletMap. Todos los marcadores
+           de afectaciones se crean dinámicamente desde script.js, a partir
+           del arreglo AFECTACIONES (sección 2), para que sea fácil
+           reemplazarlo luego por datos reales desde un backend/API propia.
+           ========================================================== -->
+      <div class="map-container" id="mapContainer">
+
+        <!-- Aquí Leaflet dibuja el mapa (tiles de OpenStreetMap) -->
+        <div id="leafletMap" class="leaflet-map"></div>
+
+        <!-- Controles de zoom / ubicación / pantalla completa -->
+        <div class="map-controls">
+          <button class="map-control-btn" id="zoomInBtn" aria-label="Acercar"><i data-lucide="plus"></i></button>
+          <button class="map-control-btn" id="zoomOutBtn" aria-label="Alejar"><i data-lucide="minus"></i></button>
+          <button class="map-control-btn map-control-btn--floating" id="locateBtn" aria-label="Mi ubicación"><i data-lucide="crosshair"></i></button>
+          <button class="map-control-btn map-control-btn--floating" id="fullscreenBtn" aria-label="Pantalla completa"><i data-lucide="maximize"></i></button>
+        </div>
+
+      <!-- Barra de búsqueda flotante sobre el mapa -->
+      <div class="map-search">
+        <i data-lucide="search"></i>
+        <input type="text" placeholder="Buscar ubicación" id="mapSearchInput" />
+      </div>
+
+        <!-- Resumen de afectaciones (barra inferior central) -->
+        <div class="summary-bar">
+          <span>Resumen de afectaciones</span>
+          <span class="summary-chip"><i data-lucide="droplet-off" class="c-blue"></i> 4</span>
+          <span class="summary-chip"><i data-lucide="droplet" class="c-red"></i> 6</span>
+          <span class="summary-chip"><i data-lucide="trending-down" class="c-brown"></i> 6</span>
+          <span class="summary-chip"><i data-lucide="wrench" class="c-orange"></i> 1</span>
+          <span class="summary-chip"><i data-lucide="waves" class="c-purple"></i> 4</span>
+          <span class="summary-chip"><i data-lucide="leaf" class="c-green"></i> 3</span>
+          <span class="summary-chip"><i data-lucide="pencil" class="c-brown"></i> 1</span>
+        </div>
+
+        <!-- Tarjeta de detalle de la afectación seleccionada -->
+        <aside class="detail-card" id="detailCard">
+          <div class="detail-card__top">
+            <span class="tag tag--red" id="detailTag">Contaminación</span>
+            <button class="icon-btn icon-btn--ghost" id="closeDetailCard" aria-label="Cerrar">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+
+          <h3 class="detail-card__title">
+            <span class="marker-dot marker-dot--red"><i data-lucide="droplet"></i></span>
+            <span id="detailTitulo">Río David</span>
+          </h3>
+
+          <p class="detail-card__place">
+            <i data-lucide="map-pin"></i> <span id="detailLugar">David, Chiriquí</span>
+          </p>
+
+          <p class="detail-card__desc" id="detailDesc">
+            Presencia de desechos sólidos y vertimientos en el cauce del río.
+          </p>
+
+          <p class="detail-card__updated">
+            <i data-lucide="clock"></i> <span id="detailActualizado">Actualizado hace 2 horas</span>
+          </p>
+
+          <!-- Imagen de referencia del reporte 
+          <div class="detail-card__image">
+            <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=600&auto=format&fit=crop&q=60"
+                 alt="Río con contaminación por desechos sólidos" id="detailImage" />
+          </div> -->
+
+          <div class="detail-card__impact">
+            <span>Impacto</span>
+            <span class="impact-badge impact-badge--alto" id="detailImpacto">Alto</span>
+          </div>
+
+          <div class="detail-card__meta">
+            <span><i data-lucide="heart-pulse"></i> Salud pública</span>
+            <span><i data-lucide="droplet"></i> Calidad del agua</span>
+          </div>
+
+        </aside>
+
+        <!-- Widget flotante para reportar una nueva afectación -->
+        <div class="report-widget">
+          <div class="report-widget__icon"><i data-lucide="droplet"></i></div>
+          <h4>¿Ves una afectación?</h4>
+          <p>Repórtala y ayuda a tu comunidad.</p>
+<a href="reportes.html" class="btn-primary btn-primary--full" id="reportBtn">
+  <i data-lucide="flag"></i> Reportar afectación <i data-lucide="chevron-right"></i>
+</a>
+        </div>
+
+      </div>
+      <!-- fin .map-container -->
+
+    </main>
+  </div>
+  <!-- fin .app-layout -->
+
+  <!-- ============================================================
+       FOOTER (idéntico en estructura al de la página principal)
+       ============================================================ -->
+  <footer class="footer" id="nosotros">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Marca -->
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px">
+              <path d="M18 3C18 3 6 14.5 6 22C6 28.627 11.373 34 18 34C24.627 34 30 28.627 30 22C30 14.5 18 3Z" fill="url(#dropGradFooter)" />
+              <circle cx="20" cy="17" r="2.5" fill="white" opacity=".7" />
+              <defs>
+                <linearGradient id="dropGradFooter" x1="6" y1="3" x2="30" y2="34" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#38B6E8"/><stop offset="1" stop-color="#0B7DBD"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="nav-logo-text" style="color:white">Clear<span>Drop</span></span>
+          </a>
+          <p>Conectando comunidades con soluciones de agua limpia para un Panamá sostenible.</p>
+
+          <div class="social-row">
+            <a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+            <a href="#" class="social-btn" aria-label="Instagram">📷</a>
+            <a href="#" class="social-btn" aria-label="Facebook">f</a>
+            <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+          </div>
+        </div>
+
+        <!-- Plataforma -->
+        <div>
+          <p class="footer-heading">Plataforma</p>
+          <ul class="footer-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="mapa.html">Mapa interactivo</a></li>
+            <li><a href="reportes.html">Reportar fuga</a></li>
+            <li><a href="educacion.html">Educación</a></li>
+          </ul>
+        </div>
+
+        <!-- Comunidad -->
+        <div>
+          <p class="footer-heading">Comunidad</p>
+          <ul class="footer-links">
+            <li><a href="voluntariado.html">Voluntariado</a></li>
+            <li><a href="comunidad.html">Foros</a></li>
+            <li><a href="voluntariado.html">Eventos</a></li>
+            <li><a href="voluntariado.html">Blog ambiental</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <p class="footer-heading">Legal</p>
+          <ul class="footer-links">
+            <li><a href="pdf/ClearDrop_Terminos_y_Condiciones.pdf" target="_blank">Términos de uso</a></li>
+            <li><a href="pdf/ClearDrop_Politica_Privacidad_GDPR.pdf" target="_blank">Privacidad</a></li>
+            <li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+            <li><a href="sobre-nosotros.html">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 ClearDrop. Todos los derechos reservados.</span>
+      </div>
+    </div>
+  </footer>
+
+<script src="auth.js"></script>
+<script src="mapa.js" defer></script>
+<script src="mapatra.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ClearDrop</title>
+<meta name="description" content="ClearDrop busca conectar y dar voz a las comunidades afectadas por problemas del agua"/>
+<meta content="img/Logosinfondo.png" property="og:image"/>
+
+<!-- Método moderno recomendado (PNG) -->
+<link rel="icon" type="image/png" href="img/ClearDrop-icon-250.png">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+<!-- Leaflet CSS & JS para el mapa dinamico--> <!--No está terminada esta parte, falta agregar el mapa a la página web como tal-->
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>-->
+
+<!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="auth.css"/>
+<!--Eliminé comunidad.css, si pasa algo en la organización de la página
+lo más probable es que sea eso-->
+<script src="auth.js"></script>
+<script src="reportes-tra.js"></script>
+</head>
+<body>
+
+<!-- =========================================================
+PROTECCIÓN DE RUTA: VERIFICAR AUTENTICACIÓN
+Esta sección se ejecuta DESPUÉS de que auth.js se ha cargado
+Muestra advertencia UNA SOLA VEZ si no tiene cuenta
+========================================================= -->
+<script>
+  // Variable para controlar si ya se mostró la advertencia
+  let advertenciaReporteMostrada = false;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mostrar advertencia solo una vez si no está autenticado
+      if (!isLoggedIn() && !advertenciaReporteMostrada) {
+        advertenciaReporteMostrada = true;
+        mostrarModalAutenticacionRequerida(
+          'Crear una cuenta te permite reportar problemas de agua, hacer seguimiento de tus reportes y ayudar a mantener nuestra comunidad más limpia.'
+        );
+      }
+    });
+  } else {
+    // DOM ya está listo
+    if (!isLoggedIn() && !advertenciaReporteMostrada) {
+      advertenciaReporteMostrada = true;
+      mostrarModalAutenticacionRequerida(
+        'Crear una cuenta te permite reportar problemas de agua, hacer seguimiento de tus reportes y ayudar a mantener nuestra comunidad más limpia.'
+      );
+    }
+  }
+</script>
+
+<!-- =========================================================
+
+NAVBAR
+
+========================================================= -->
+<nav class="navbar">
+<div class="container">
+
+<!-- Logo -->
+<!--<img src="img/Logosinfondo.png" class="nav-logo" alt="ClearDropLogo">-->
+<img src="img/Captura_de_pantalla_2026-05-28_153221-removebg-preview.png" class="nav-logo-nombre" alt="ClearDrop">
+
+ <ul class="nav-links">
+
+      <!-- 🌐 Translate button — BEFORE "Inicio" -->
+      <button id="langToggle" class="lang-toggle" aria-pressed="false" aria-label="Cambiar idioma">
+    <!-- Icono EN (puedes reemplazar por tu SVG o font-icon) -->
+      <span class="icon icon--en" aria-hidden="true">
+        <!-- Simple bandera/ico EN (UK/US style minimal) -->
+        <img src="img/english-icon.png">
+      </span>
+
+    <!-- Icono ES -->
+      <span class="icon icon--es" aria-hidden="true">
+        <img src="img/español-icon.png">
+      </span>
+
+    <span class="label">EN</span>
+  </button>
+
+<li><a href="index.html">Inicio</a></li>
+<li><a href="noticias.html">Noticias</a></li>
+<li><a href="mapa.html">Mapas</a></li>
+<li><a href="educacion.html">Educación</a></li>
+
+<!-- Grupo: Comunidad y Voluntariado -->
+<li class="nav-dropdown">
+  <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+    Únete
+    <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <ul class="nav-dropdown-menu">
+    <li><a href="comunidad.html">Comunidad</a></li>
+    <li><a href="voluntariado.html">Voluntariado</a></li>
+  </ul>
+</li>
+
+<li><a href="tienda.html">Tienda</a></li>
+<li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+
+<!-- Grupo: Mi perfil -->
+<li class="nav-dropdown">
+  <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+    <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <ul class="nav-dropdown-perfil">
+    <li><p>Astrid.cubilla@gmail.com</p></li>
+    <li><a href="#mi-huella">Mi huella</a></li>
+    <li><a href="#guardados">Guardados</a></li>
+    <li><a href="#configuracion">Configuración</a></li>
+    <li><a href="#cambiar-cuenta">Cambiar cuenta</a></li>
+    <li><a href="#cerrar-sesion">Cerrar sesión</a></li>
+  </ul>
+</li>
+</ul>
+
+<!-- Menú de hamburguesa para dispositivos móviles -->
+<button class="nav-hamburger" id="menuBtn" aria-label="Abrir menú">
+<span></span><span></span><span></span>
+</button>
+</ul>
+</div>
+</nav>
+
+<!-- Interfaz del nav en móviles -->
+<div class="mobile-nav" id="mobileNav">
+<button class="mobile-nav-close" id="menuClose">✕</button>
+<a href="index.html">Inicio</a>
+<a href="noticias.html">Noticias</a>
+<a href="mapa.html">Mapas</a>
+<a href="#educacion">Educación</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+    Comunidad
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="comunidad.html">Comunidad</a>
+    <a href="#voluntariado">Voluntariado</a>
+  </div>
+</div>
+
+<a href="#tienda">Tienda</a>
+<a href="#nosotros">Sobre nosotros</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+     <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="#cuenta">Mi cuenta</a>
+    <a href="#agregar">Agregar cuenta</a>
+    <a href="#cerrar-sesion">Cerrar sesión</a>
+  </div>
+</div>
+</div>
+<main style="padding-top:var(--nav-h);">
+<!-- =========================================================
+ 
+ programar 
+
+========================================================= -->
+
+<main class="cd-reportes">
+
+    <!-- ========================= -->
+    <!-- HERO -->
+    <!-- ========================= -->
+
+    <section class="cd-reportes__hero">
+
+        <div class="cd-reportes__hero-badge">
+            REPORTAR INCIDENTES
+        </div>
+
+        <h1 class="cd-reportes__hero-title">
+            Ayúdanos a cuidar el agua reportando cualquier problema en tu comunidad.
+        </h1>
+
+        <p class="cd-reportes__hero-description">
+            Completa el siguiente formulario para informar sobre fugas, contaminación,
+            baja presión, inundaciones u otras situaciones relacionadas con el agua.
+            Nuestro equipo recibirá tu reporte para su respectivo seguimiento.
+        </p>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- FORMULARIO -->
+    <!-- ========================= -->
+     
+    <form
+        id="cdFormularioReporte"
+        class="cd-reportes__form"
+        enctype="multipart/form-data">
+
+
+        <input
+            type="hidden"
+            name="access_key"
+            value="YOUR_WEB3FORMS_ACCESS_KEY">
+
+        <input
+            type="hidden"
+            name="subject"
+            value="Nuevo reporte recibido desde ClearDrop">
+
+        <input
+            type="hidden"
+            name="from_name"
+            value="ClearDrop">
+
+        <!-- ========================= -->
+        <!-- TIPO DE REPORTE -->
+        <!-- ========================= -->
+
+        <section class="cd-section">
+
+            <div class="cd-section__header">
+
+                <span class="cd-section__step">
+                    01
+                </span>
+
+                <div>
+
+                    <h2 class="cd-section__title">
+                        Tipo de reporte
+                    </h2>
+
+                    <p class="cd-section__subtitle">
+                        Selecciona el problema que deseas reportar.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="cd-report-type-grid">
+
+                <!-- SIN AGUA -->
+
+                <label class="cd-report-card">
+
+                    <input
+                        type="radio"
+                        name="tipo_reporte"
+                        value="Sin agua">
+
+                    <div class="cd-report-card__icon">
+
+                        <img src="img/sin agua.png" alt="Icono de sin agua" class="sinaguaicono">
+
+                    </div>
+
+                    <h3>
+                        Sin agua
+                    </h3>
+
+                    <p>
+                        No hay suministro de agua potable.
+                    </p>
+
+                </label>
+
+                <!-- AGUA CONTAMINADA -->
+
+                <label class="cd-report-card">
+
+                    <input
+                        type="radio"
+                        name="tipo_reporte"
+                        value="Agua contaminada">
+
+                    <div class="cd-report-card__icon">
+
+                        <img src="img/agua contaminada.png" alt="Icono de agua contaminada" class="aguacontaminadaicono">
+
+                    </div>
+
+                    <h3>
+                        Agua contaminada
+                    </h3>
+
+                    <p>
+                        Agua con color, olor o apariencia inusual.
+                    </p>
+
+                </label>
+
+                <!-- BAJA PRESION -->
+
+                <label class="cd-report-card">
+
+                    <input
+                        type="radio"
+                        name="tipo_reporte"
+                        value="Baja presión">
+
+                    <div class="cd-report-card__icon">
+
+                        <img src="img/baja presión.png" alt="Icono de baja presión" class="bajapresionicono">
+
+                    </div>
+
+                    <h3>
+                        Baja presión
+                    </h3>
+
+                    <p>
+                        El agua llega con poca presión.
+                    </p>
+
+                </label>
+
+                <!-- FUGA -->
+
+                <label class="cd-report-card">
+
+                    <input
+                        type="radio"
+                        name="tipo_reporte"
+                        value="Fuga de agua">
+
+                    <div class="cd-report-card__icon">
+
+                        <img src="img/tuberia_rota.png" alt="Icono de fuga de agua" class="fugadeaguaicono">
+
+                    </div>
+
+                    <h3>
+                        Fuga de agua
+                    </h3>
+
+                    <p>
+                        Reporta tuberías o conexiones con fugas.
+                    </p>
+
+                </label>
+
+                <!-- INUNDACION -->
+
+                <label class="cd-report-card">
+
+                    <input
+                        type="radio"
+                        name="tipo_reporte"
+                        value="Inundación">
+
+                    <div class="cd-report-card__icon">
+
+                        <img src="img/inundaciones.png" alt="Icono de inundaciones" class="inundacionesicono">
+
+                    </div>
+
+                    <h3>
+                        Inundación
+                    </h3>
+
+                    <p>
+                        Acumulación de agua en calles o viviendas.
+                    </p>
+
+                </label>
+
+                <!-- OTRO -->
+
+                <label class="cd-report-card">
+
+                    <input
+                        id="cdOtroReporte"
+                        type="radio"
+                        name="tipo_reporte"
+                        value="Otro">
+
+                    <div class="cd-report-card__icon">
+
+                        <img src="img/otros.png" alt="Icono de otro" class="otroicono">
+
+                    </div>
+
+                    <h3>
+                        Otro
+                    </h3>
+
+                    <p>
+                        Describe un problema diferente.
+                    </p>
+
+                </label>
+
+            </div>
+
+            <!-- CAMPO OTRO -->
+
+            <div
+                id="cdOtroContainer"
+                class="cd-otro-container">
+
+                <label
+                    class="cd-label"
+                    for="cdOtroInput">
+
+                    Especifica el problema
+
+                </label>
+
+                <input
+                    id="cdOtroInput"
+                    class="cd-input"
+                    type="text"
+                    name="otro_reporte"
+                    maxlength="120"
+                    placeholder="Describe el problema...">
+
+            </div>
+
+        </section>
+
+                <!-- ========================= -->
+        <!-- UBICACIÓN -->
+        <!-- ========================= -->
+
+        <section class="cd-section">
+
+            <div class="cd-section__header">
+
+                <span class="cd-section__step">
+                    02
+                </span>
+
+                <div>
+
+                    <h2 class="cd-section__title">
+                        Ubicación del incidente
+                    </h2>
+
+                    <p class="cd-section__subtitle">
+                        Selecciona la ubicación exacta del reporte utilizando el mapa interactivo.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="cd-location-card">
+
+                <div class="cd-location-toolbar">
+
+                    <div class="cd-location-search">
+
+                        <label class="cd-label" for="cdBuscarDireccion">
+                            Buscar dirección
+                        </label>
+
+                        <input
+                            id="cdBuscarDireccion"
+                            class="cd-input"
+                            type="text"
+                            placeholder="Escribe una dirección...">
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="cdUbicacionActual"
+                        class="cd-btn-location">
+
+                        Usar mi ubicación
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="cdMapa"
+                    class="cd-map">
+
+                </div>
+
+                <div class="cd-location-info">
+
+                    <div class="cd-location-item">
+
+                        <span class="cd-location-label">
+                            Dirección
+                        </span>
+
+                        <p id="cdDireccion">
+                            Ninguna ubicación seleccionada.
+                        </p>
+
+                    </div>
+
+                    <div class="cd-location-grid">
+
+                        <div class="cd-location-item">
+
+                            <span class="cd-location-label">
+                                Latitud
+                            </span>
+
+                            <p id="cdLatitud">
+                                --
+                            </p>
+
+                        </div>
+
+                        <div class="cd-location-item">
+
+                            <span class="cd-location-label">
+                                Longitud
+                            </span>
+
+                            <p id="cdLongitud">
+                                --
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <input
+                    type="hidden"
+                    name="direccion"
+                    id="cdDireccionInput">
+
+                <input
+                    type="hidden"
+                    name="latitud"
+                    id="cdLatitudInput">
+
+                <input
+                    type="hidden"
+                    name="longitud"
+                    id="cdLongitudInput">
+
+            </div>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- IMÁGENES -->
+        <!-- ========================= -->
+
+        <section class="cd-section">
+
+            <div class="cd-section__header">
+
+                <span class="cd-section__step">
+                    03
+                </span>
+
+                <div>
+
+                    <h2 class="cd-section__title">
+                        Evidencia fotográfica
+                    </h2>
+
+                    <p class="cd-section__subtitle">
+                        Agrega hasta tres imágenes para respaldar tu reporte.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div
+                id="cdDropZone"
+                class="cd-dropzone">
+
+                <div class="cd-dropzone-icon">
+
+                   📸
+
+                </div>
+
+                <h3>
+                    Arrastra tus imágenes aquí
+                </h3>
+
+                <p>
+
+                    o haz clic para seleccionarlas desde tu dispositivo.
+
+                </p>
+
+                <small>
+
+                    Máximo 3 imágenes • 5 MB por archivo
+
+                </small>
+
+                <input
+                    id="cdImagenes"
+                    type="file"
+                    name="imagenes"
+                    accept="image/*"
+                    multiple
+                    hidden>
+
+            </div>
+
+            <div
+                id="cdPreviewContainer"
+                class="cd-preview-container">
+
+            </div>
+
+            <div
+                id="cdImageError"
+                class="cd-message-error">
+
+            </div>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- DESCRIPCIÓN -->
+        <!-- ========================= -->
+
+        <section class="cd-section">
+
+            <div class="cd-section__header">
+
+                <span class="cd-section__step">
+                    04
+                </span>
+
+                <div>
+
+                    <h2 class="cd-section__title">
+                        Descripción del problema
+                    </h2>
+
+                    <p class="cd-section__subtitle">
+                        Proporciona la mayor cantidad de detalles posible.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <label
+                class="cd-label"
+                for="cdDescripcion">
+
+                Describe lo ocurrido
+
+            </label>
+
+            <textarea
+                id="cdDescripcion"
+                class="cd-textarea"
+                name="descripcion"
+                maxlength="600"
+                rows="8"
+                placeholder="Describe el problema con el mayor detalle posible..."></textarea>
+
+            <div class="cd-textarea-footer">
+
+                <span id="cdDescripcionError"
+                    class="cd-message-error">
+                </span>
+
+                <span id="cdContadorCaracteres">
+
+                    0 / 600
+
+                </span>
+
+            </div>
+
+        </section>
+
+                <!-- ========================= -->
+        <!-- FECHA DEL INCIDENTE -->
+        <!-- ========================= -->
+
+        <section class="cd-section">
+
+            <div class="cd-section__header">
+
+                <span class="cd-section__step">
+                    05
+                </span>
+
+                <div>
+
+                    <h2 class="cd-section__title">
+                        ¿Cuándo ocurrió?
+                    </h2>
+
+                    <p class="cd-section__subtitle">
+                        Indica cuándo sucedió el incidente reportado.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="cd-date-grid">
+
+                <label class="cd-option-card">
+
+                    <input
+                        type="radio"
+                        name="fecha_reporte"
+                        value="Hoy">
+
+                    <span class="cd-option-icon">
+                        <img src="img/cuando_ocurrio_hoy.png" alt="Icono de hoy" class="hoyicono">
+                    </span>
+
+                    <h3>Hoy</h3>
+
+                </label>
+
+                <label class="cd-option-card">
+
+                    <input
+                        type="radio"
+                        name="fecha_reporte"
+                        value="Ayer">
+                  <span class="cd-option-icon">
+                     <img src="img/cuando_ocurrio_ayer.png" alt="Icono de ayer" class="ayericono">
+                   </span> 
+                    <h3>Ayer</h3>
+
+                </label>
+
+                <label class="cd-option-card">
+
+                    <input
+                        type="radio"
+                        name="fecha_reporte"
+                        value="Hace varios días">
+
+                    <span class="cd-option-icon">
+                        <img src="img/cuando_ocurrio_hace_varios_dias.png" alt="Icono de varios días" class="variosdiasicono">
+                    </span>
+
+                    <h3>Hace varios días</h3>
+
+                </label>
+
+                <label class="cd-option-card">
+
+                    <input
+                        id="cdFechaPersonalizadaRadio"
+                        type="radio"
+                        name="fecha_reporte"
+                        value="Elegir fecha">
+
+                    <span class="cd-option-icon">
+                        <img src="img/cuando_ocurrio_elegir_fecha.png" alt="Icono de elegir fecha" class="elegirfechicono">
+                    </span>
+
+                    <h3>Elegir fecha</h3>
+
+                </label>
+
+            </div>
+
+            <div
+                id="cdFechaPersonalizada"
+                class="cd-hidden-field">
+
+                <label
+                    class="cd-label"
+                    for="cdFecha">
+
+                    Selecciona la fecha
+
+                </label>
+
+                <input
+                    id="cdFecha"
+                    class="cd-input"
+                    type="date"
+                    name="fecha_personalizada">
+
+            </div>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- NIVEL DE GRAVEDAD -->
+        <!-- ========================= -->
+
+        <section class="cd-section">
+
+            <div class="cd-section__header">
+
+                <span class="cd-section__step">
+                    06
+                </span>
+
+                <div>
+
+                    <h2 class="cd-section__title">
+                        Nivel de gravedad
+                    </h2>
+
+                    <p class="cd-section__subtitle">
+                        Selecciona el nivel que mejor describa la situación.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="cd-severity-grid">
+
+                <label class="cd-severity-card cd-severity-low">
+
+                    <input
+                        type="radio"
+                        name="gravedad"
+                        value="Leve">
+
+                    <div class="cd-severity-icon">
+                        <img src="img/nivel_de_gravedad_leve.png" alt="Icono de gravedad leve" class="gravedadleveicono">
+                    </div>
+
+                    <h3>Leve</h3>
+
+                    <p>
+                        El problema puede esperar atención.
+                    </p>
+
+                </label>
+
+                <label class="cd-severity-card cd-severity-medium">
+
+                    <input
+                        type="radio"
+                        name="gravedad"
+                        value="Moderada">
+
+                    <div class="cd-severity-icon">
+                        <img src="img/nivel_de_gravedad_moderada.png" alt="Icono de gravedad moderada" class="gravedadmoderadaicono">
+                    </div>
+
+                    <h3>Moderada</h3>
+
+                    <p>
+                        Requiere atención en poco tiempo.
+                    </p>
+
+                </label>
+
+                <label class="cd-severity-card cd-severity-high">
+
+                    <input
+                        type="radio"
+                        name="gravedad"
+                        value="Grave">
+
+                    <div class="cd-severity-icon">
+                        <img src="img/nivel_de_gravdeda_grave.png" alt="Icono de gravedad grave" class="gravedadgraveicono">
+                    </div>
+
+                    <h3>Grave</h3>
+
+                    <p>
+                        Puede afectar a varias personas.
+                    </p>
+
+                </label>
+
+                <label class="cd-severity-card cd-severity-critical">
+
+                    <input
+                        type="radio"
+                        name="gravedad"
+                        value="Crítica">
+
+                    <div class="cd-severity-icon">
+                        <img src="img/nivel_de_gravedad_critica.png" alt="Icono de gravedad crítica" class="gravedadcriticaicono">
+                    </div>
+
+                    <h3>Crítica</h3>
+
+                    <p>
+                        Atención inmediata requerida.
+                    </p>
+
+                </label>
+
+            </div>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- MENSAJES -->
+        <!-- ========================= -->
+
+        <div
+            id="cdFormularioMensajes"
+            class="cd-form-messages">
+
+            <div
+                id="cdErrorGeneral"
+                class="cd-alert cd-alert-error">
+
+            </div>
+
+            <div
+                id="cdSuccessGeneral"
+                class="cd-alert cd-alert-success">
+
+            </div>
+
+        </div>
+
+        <!-- ========================= -->
+        <!-- BOTÓN -->
+        <!-- ========================= -->
+
+        <section class="cd-submit-section">
+
+            <button
+                id="cdEnviarReporte"
+                class="cd-submit-button"
+                type="submit">
+
+                <span class="cd-submit-text">
+
+                    Enviar reporte
+
+                </span>
+
+                <span
+                    id="cdSpinner"
+                    class="cd-spinner">
+
+                </span>
+
+            </button>
+
+            <p class="cd-submit-note">
+
+                Al enviar este formulario aceptas que la información proporcionada
+                sea utilizada únicamente para la gestión del reporte realizado.
+
+            </p>
+
+        </section>
+
+    </form>
+
+</main>
+
+<!-- ========================= -->
+<!-- LIBRERÍAS -->
+<!-- ========================= -->
+
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css">
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+
+<!-- ========================= -->
+<!-- SCRIPT PARA AUTO-RELLENAR DATOS DEL USUARIO -->
+<!-- ========================= -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const user = getCurrentUser();
+    
+    if (user) {
+      // Rellenar campos con datos del usuario
+      document.getElementById('cdNombre').value = user.name;
+      document.getElementById('cdEmail').value = user.email;
+      document.getElementById('cdUserId').value = user.id;
+      document.getElementById('cdUserIdReport').value = user.id;
+      
+      // Mostrar email en navbar
+      if (document.getElementById('navUserEmail')) {
+        document.getElementById('navUserEmail').textContent = user.email;
+      }
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script src="enviodereporte.js"></script>
+
+<script src="formatodereporte.js"></script>
+
+
+
+<!-- =========================================================
+
+FOOTER
+
+========================================================= -->
+<footer class="footer" id="nosotros">
+<div class="container">
+<div class="footer-grid">
+
+<!-- Brand -->
+<div class="footer-brand">
+<a href="#" class="nav-logo">
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px">
+<path d="M18 3C18 3 6 14.5 6 22C6 28.627 11.373 34 18 34C24.627 34 30 28.627 30 22C30 14.5 18 3Z" fill="url(#dropGrad2)" />
+<circle cx="20" cy="17" r="2.5" fill="white" opacity=".7" />
+<defs>
+<linearGradient id="dropGrad2" x1="6" y1="3" x2="30" y2="34" gradientUnits="userSpaceOnUse">
+<stop stop-color="#38B6E8"/><stop offset="1" stop-color="#0B7DBD"/>
+</linearGradient>
+</defs>
+</svg>
+<span class="nav-logo-text" style="color:white">Clear<span>Drop</span></span>
+</a>
+<p>Conectando comunidades con soluciones de agua limpia para un Panamá sostenible.</p>
+
+<div class="social-row">
+<a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+<a href="#" class="social-btn" aria-label="Instagram">📷</a>
+<a href="#" class="social-btn" aria-label="Facebook">f</a>
+<a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+</div>
+</div>
+
+<!-- Plataforma -->
+<div>
+<p class="footer-heading">Plataforma</p>
+<ul class="footer-links">
+<li><a href="index.html">Inicio</a></li>
+<li><a href="mapa.html">Mapa interactivo</a></li>
+<li><a href="reportes.html">Reportar fuga</a></li>
+<li><a href="educacion.html">Educación</a></li>
+</ul>
+</div>
+
+<!-- Comunidad -->
+<div>
+<p class="footer-heading">Comunidad</p>
+<ul class="footer-links">
+<li><a href="voluntariado.html">Voluntariado</a></li>
+<li><a href="comunidad.html">Foros</a></li>
+<li><a href="voluntariado.html">Eventos</a></li>
+<li><a href="voluntariado.html">Blog ambiental</a></li>
+</ul>
+</div>
+
+<!-- Legal -->
+<div>
+<p class="footer-heading">Legal</p>
+<ul class="footer-links">
+<li><a href="pdf/ClearDrop_Terminos_y_Condiciones.pdf" target="_blank">Términos de uso</a></li>
+<li><a href="pdf/ClearDrop_Politica_Privacidad_GDPR.pdf" target="_blank">Privacidad</a></li>
+<li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+<li><a href="sobre-nosotros.html">Contacto</a></li>
+</ul>
+</div>
+</div>
+
+<div class="footer-bottom">
+<span>© 2026 ClearDrop. Todos los derechos reservados.</span>
+</div>
+</div>
+</footer>
+
+
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAehDZcKKFUEwb3p1dW0iS8HtBbddp5efg&callback=initMap"></script>
+</body>
+</html>

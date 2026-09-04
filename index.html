@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ClearDrop</title>
+<meta name="description" content="ClearDrop busca conectar y dar voz a las comunidades afectadas por problemas del agua"/>
+
+<!-- Método moderno recomendado (PNG) -->
+<link rel="icon" type="image/png" href="img/ClearDrop-icon-250.png">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<!-- =========================================================
+
+NAVBAR
+
+========================================================= -->
+<nav class="navbar">
+<div class="container">
+
+<img src="img/Captura_de_pantalla_2026-05-28_153221-removebg-preview.png" class="nav-logo-nombre" alt="ClearDrop">
+
+<ul class="nav-links">
+
+  <!-- Inserta esto donde quieras el botón -->
+  <button id="langToggle" class="lang-toggle" aria-pressed="false" aria-label="Cambiar idioma">
+    <!-- Icono EN (puedes reemplazar por tu SVG o font-icon) -->
+      <span class="icon icon--en" aria-hidden="true">
+        <!-- Simple bandera/ico EN (UK/US style minimal) -->
+        <img src="img/english-icon.png">
+      </span>
+
+    <!-- Icono ES -->
+      <span class="icon icon--es" aria-hidden="true">
+        <img src="img/español-icon.png">
+      </span>
+
+    <span class="label">EN</span>
+  </button>
+
+<!-- Opcional: incluye los archivos CSS y JS vinculados -->
+<link rel="stylesheet" href="lang-toggle.css">
+<script src="lang-toggle.js" defer></script>
+
+  <li><a href="index.html" class="active">Inicio</a></li>
+  <li><a href="noticias.html">Noticias</a></li>
+  <li><a href="mapa.html">Mapas</a></li>
+  <li><a href="educacion.html">Educación</a></li>
+
+  <!-- Grupo: Comunidad y Voluntariado -->
+  <li class="nav-dropdown">
+    <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+      Únete
+      <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <ul class="nav-dropdown-menu">
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="voluntariado.html">Voluntariado</a></li>
+    </ul>
+  </li>
+
+  <li><a href="tienda.html">Tienda</a></li>
+  <li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+
+  <!-- Grupo: Mi perfil -->
+  <li class="nav-dropdown">
+  <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+    <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <ul class="nav-dropdown-perfil">
+    <li><p>noe.jn@gmail.com</p></li>
+    <li><a href="voluntariado.hmtl">Mi huella</a></li>
+    <li><a href="#configuracion">Configuración</a></li>
+  </ul>
+  </li>
+</ul>
+</div>
+</nav>
+
+<!-- Menú de hamburguesa para dispositivos móviles -->
+<button class="nav-hamburger" id="menuBtn" aria-label="Abrir menú">
+<span></span><span></span><span></span>
+</button>
+</ul>
+</div>
+</nav>
+
+<!-- Interfaz del nav en móviles -->
+<div class="mobile-nav" id="mobileNav">
+<button class="mobile-nav-close" id="menuClose">✕</button>
+<a href="index.html">Inicio</a>
+<a href="noticias.html">Noticias</a>
+<a href="mapa.html">Mapas</a>
+<a href="educacion.html">Educación</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+    Comunidad
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="comunidad.html">Comunidad</a>
+    <a href="voluntariado.html">Voluntariado</a>
+  </div>
+</div>
+
+<a href="tienda.html">Tienda</a>
+<a href="sobre-nosotros.html">Sobre nosotros</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+     <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="#cuenta">Mi cuenta</a>
+    <a href="#agregar">Agregar cuenta</a>
+    <a href="#cerrar-sesion">Cerrar sesión</a>
+  </div>
+</div>
+</div>
+
+
+<!-- =========================================================
+
+hero
+
+========================================================= -->
+<section class="hero" id="inicio">
+<!--Video hero-->
+<video autoplay muted loop playinline class="hero-video"> <!--Esto permite que el video se reproduzca en bucle, al igual que en silencio. El playinline es para que se reproduzca en el lugar donde se define-->
+    <source src="video/Video_para_index.mp4" type="video/mp4">
+</video>
+
+<div class="hero-blob hero-blob-1"></div>
+<div class="hero-blob hero-blob-2"></div>
+
+<div class="container">
+
+<div class="hero-content">
+
+<h1 class="hero-title">
+Educación azul<br/>para un futuro verde
+</h1>
+
+<p class="hero-sub">
+Conecta a personas con soluciones de agua. Reporta fugas, explora el mapa interactivo y únete a la comunidad ambiental de Panamá.
+</p>
+
+<div class="hero-actions">
+<a href="reportes.html" class="btn btn-primary">
+
+<!-- wrench icon -->
+<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+Reportar problema
+</a>
+
+<a href="mapa.html" class="btn btn-outline">
+<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+Explorar mapa
+</a>
+</div>
+</div>
+</section>
+
+<!-- =========================================================
+
+QUICK ACTIONS
+
+========================================================= -->
+<section class="quick-actions" id="reportes">
+<div class="container">
+<div class="quick-actions-header reveal">
+<p class="section-label">Acciones rápidas</p>
+<h2 class="section-title">¿Qué deseas hacer hoy?</h2>
+</div>
+
+<div class="actions-grid">
+
+<!-- Card 1 -->
+<a href="noticias.html"><!--Revisar esta parte para configurar los botones. También crear una class-->
+<div class="action-cards" style="transition-delay:.08s;">
+<div class="action-icon-wrap ac-blue">
+    <img src="img/noticiasimg.png" alt="Informate-ahora">
+</div>
+<h3 class="action-title">Ver noticias</h3>
+<p class="action-desc">Infórmate sobre las actualizaciones del servicio del agua cerca de tu comunidad.</p>
+</div>
+</a>
+
+
+<!-- Card 2 -->
+ <a href="mapa.html">
+<div class="action-cards" style="transition-delay:.08s">
+<div class="action-icon-wrap ac-teal">
+    <img src="img/mapaimg.png" alt="Mira-el-mapa">
+</div>
+<h3 class="action-title">Ver mapa interactivo</h3>
+<p class="action-desc">Explora el mapa de Panamá con reportes en tiempo real y puntos de atención.</p>
+</div>
+</a>
+
+<!-- Card 3 -->
+<a href="educacion.html">
+<div class="action-cards" style="transition-delay:.16s" id="educacion">
+<div class="action-icon-wrap ac-green">
+    <img src="img/módulosimg.png" alt="Aprende-mas">
+</div>
+<h3 class="action-title">Aprender sobre el agua</h3>
+<p class="action-desc">Accede a recursos educativos sobre el cuidado del agua y medio ambiente.</p>
+</div>
+</a>
+
+<!-- Card 4 -->
+<a href="voluntariado.html">
+<div class="action-cards" style="transition-delay:.24s" id="comunidad">
+<div class="action-icon-wrap ac-amber">
+    <img src="img/voluntariadoimg.png" alt="Unete-y-apoya">
+</div>
+<h3 class="action-title">Unirse como voluntario</h3>
+<p class="action-desc">Únete a nuestra red de voluntarios y contribuye al uso responsable del agua.</p>
+</div>
+</a>
+</div>
+</div>
+</a>
+</section>
+
+<!-- =========================================================
+
+STATS STRIP
+
+========================================================= -->
+<p class="section-label">En la provincia de Chiriquí</p>
+<h2 class="section-title">Datos recolectados</h2>
+<div class="stats-strip">
+<div class="container">
+<div class="stats-grid">
+<div class="stat-item reveal">
+<div class="stat-value" data-target="149">0<span>+</span></div>
+<div class="stat-label">Personas encuestadas</div>
+</div>
+
+<div class="stat-item reveal" style="transition-delay:.1s">
+<div class="stat-value" data-target="50">0<span>%</span></div>
+<div class="stat-label">Tienen afectaciones con el servicio del agua</div>
+</div>
+
+<div class="stat-item reveal" style="transition-delay:.2s">
+<div class="stat-value" data-target="15">0<span>+</span></div>
+<div class="stat-label">Corregimientos abarcados</div>
+</div>
+
+<div class="stat-item reveal" style="transition-delay:.3s">
+<div class="stat-value" data-target="61">0<span>%</span></div>
+<div class="stat-label">Exige una solución</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- =========================================================
+       MAP PREVIEW
+  ========================================================= -->
+  <section class="map-section" id="mapa">
+    <div class="container">
+      <!-- Info -->
+      <div class="map-info reveal">
+        <p class="section-label">Mapa interactivo</p>
+        <h2 class="section-title">Reportes en tiempo real en Panamá</h2>
+        <p>Visualiza el estado del agua en todo el país. Los marcadores muestran fugas activas, zonas en reparación y puntos de distribución de agua potable.</p>
+        <a href="mapa.html" class="btn-map">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Ver mapa completo
+        </a>
+      </div>
+
+      <!-- Widget -->
+      <div class="map-widget reveal" style="transition-delay:.15s">
+        <div class="map-widget-header">
+          <div class="map-selector">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Panamá
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="traffic-lights">
+            <span class="tl-red"></span>
+            <span class="tl-amber"></span>
+            <span class="tl-green"></span>
+          </div>
+        </div>
+
+        <div class="map-canvas" id="mapCanvas">
+          <div id="googleMap"></div>
+        </div>
+
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#EF5350"></div>Fuga activa</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#FFC107"></div>En proceso</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#4CAF78"></div>Resuelto</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#29B6F6"></div>Distribución</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- =========================================================
+
+NEWS / ALERTS
+
+========================================================= -->
+<section class="news-section" id="noticias">
+<div class="container">
+<div class="news-header reveal">
+
+<div>
+<p class="section-label">Alertas &amp; Noticias</p>
+<h2 class="section-title">Últimas actualizaciones</h2>
+</div>
+
+<a href="noticias.html" class="btn-secondary">
+Ver todas
+<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+</a>
+</div>
+
+<!-- Ticker -->
+<div class="ticker-banner reveal" style="transition-delay:.1s">
+<span class="ticker-label">En vivo</span>
+<div class="ticker-track">
+<div class="ticker-inner">
+<span>Corte de agua programado en David – 12:45 AM</span>
+<span>Fuga reparada en Av. Balboa, Panamá Ciudad</span>
+<span>Campaña de ahorro de agua activa en Chiriquí</span>
+<span>Nuevo punto de distribución en Colón</span>
+<span>Taller de educación ambiental – Registro abierto</span>
+</div>
+</div>
+</div>
+
+<!-- Alert cards -->
+<div class="alerts-grid">
+
+<!--//Diseño de Tarjertas de noticias//-->
+
+<!-- Card 1 -->
+<div class="alert-card ac-danger reveal">
+
+    <div class="news-icon-main">
+        <img src="img/Icono de en urgente para tarjeta de noticia.png" alt="Urgente">
+    </div>
+
+    <div class="news-content">
+
+        <span class="alert-tag tag-red">URGENTE</span>
+        <div class="alert-body">
+          <div class="alert-title">
+            <h3>IDAAN suspenderá el servicio en comunidades por 9 horas</h3>
+          </div>
+          <div class="alert-desc">
+            <p>La planta potabilizadora Jaime Díaz Quintero de La Chorrera, reducirá su operación por limpieza y mantenimiento.</p>
+          </div>
+        </div>
+        <div class="news-footer">
+        <br>
+            <div class="news-location">
+                <img src="img/location-icon-red-news.png" alt="lugar" class="icon-news">
+                Panamá Oeste
+            </div>
+
+            <div class="news-time">
+                <img src="img/time-icon-red-news.png" alt="tiempo" class="icon-news">
+                09:14 AM – 21 de agosto
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Card 2 -->
+<div class="alert-card ac-warning reveal">
+
+    <div class="news-icon-main">
+        <img src="img/Icono de en proceso para tarjeta de noticia.png" alt="En proceso">
+    </div>
+
+    <div class="news-content">
+
+        <span class="alert-tag tag-yellow">EN PROCESO</span>
+        <div class="alert-body">
+          <div class="alert-title">
+            <h3>MiAmbiente vigila la calidad del agua en Donoso</h3>
+          </div>
+          <div class="alert-desc">
+            <p> La iniciativa busca verificar el cumplimiento de las acciones contempladas en el Plan de Gestión Segura.</p>
+          </div>
+        </div>
+        <div class="news-footer">
+        <br>
+            <div class="news-location">
+                <img src="img/location-icon-yellow-news.png" alt="lugar" class="icon-news">
+                Coclé
+            </div>
+
+            <div class="news-time">
+                <img src="img/time-icon-yellow-news.png" alt="tiempo" class="icon-news">
+                11:33 AM – 24 de agosto
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Card 3 -->
+<div class="alert-card ac-success reveal">
+
+    <div class="news-icon-main">
+        <img src="img/Icono de arreglado para tarjeta de noticia.png" alt="Finalizado">
+    </div>
+
+    <div class="news-content">
+
+        <span class="alert-tag tag-green">FINALIZADO</span>
+        <div class="alert-body">
+          <div class="alert-title">
+            <h3>Fuga de agua en Av. Balboa debido a una tubería dañada</h3>
+          </div>
+          <div class="alert-desc">
+            <p>El servicio de agua potable fue restaurado con éxito. Todo Gracias a los 14 reportes de la comunidad, realizados por ciudadanos activos.</p>
+          </div>
+        </div>
+        <div class="news-footer">
+        <br>
+            <div class="news-location">
+                <img src="img/location-icon-green-news.png" alt="lugar" class="icon-news">
+                Panamá
+            </div>
+
+            <div class="news-time">
+                <img src="img/time-icon-green-news.png" alt="tiempo" class="icon-news">
+                11:30 PM - Ayer
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Card 4 -->
+<div class="alert-card ac-info reveal">
+
+    <div class="news-icon-main">
+        <img src="img/Icono de calendario para tarjeta de noticia.png" alt="EVENTO">
+    </div>
+
+    <div class="news-content">
+
+        <span class="alert-tag tag-blue">EVENTO</span>
+        <div class="alert-body">
+          <div class="alert-title">
+            <h3>Taller de Educación Ambiental</h3>
+          </div>
+          <div class="alert-desc">
+            <p>Únete al taller virtual Agua para Todos el próximo viernes. Registro gratuito.</p>
+          </div>
+        </div>
+        <div class="news-footer">
+        <br>
+            <div class="news-location">
+                <img src="img/calendar-icon-news.png" alt="lugar" class="icon-news">
+                David
+            </div>
+
+            <div class="news-time">
+                <img src="img/time-icon-blue-news.png" alt="tiempo" class="icon-news">
+                6:00 PM - Vie, 5 Jun
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Card 5 -->
+<div class="alert-card ac-danger reveal">
+
+    <div class="news-icon-main">
+        <img src="img/Icono de en urgente para tarjeta de noticia.png" alt="Urgente">
+    </div>
+
+    <div class="news-content">
+
+        <span class="alert-tag tag-red">URGENTE</span>
+        <div class="alert-body">
+          <div class="alert-title">
+            <h3>Corte de agua en Calle Central</h3>
+          </div>
+          <div class="alert-desc">
+            <p>Se realizará suspensión del servicio por mantenimiento de tuberías principales.</p>
+          </div>
+        </div>
+        <div class="news-footer">
+        <br>
+            <div class="news-location">
+                <img src="img/location-icon-red-news.png" alt="lugar" class="icon-news">
+                Colón
+            </div>
+
+            <div class="news-time">
+                <img src="img/time-icon-red-news.png" alt="tiempo" class="icon-news">
+                Hace 15 minutos
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Card 6 -->
+<div class="alert-card ac-info reveal">
+
+    <div class="news-icon-main">
+        <img src="img/Icono de calendario para tarjeta de noticia.png" alt="Evento">
+    </div>
+
+    <div class="news-content">
+
+        <span class="alert-tag tag-blue">EVENTO</span>
+        <div class="alert-body">
+          <div class="alert-title">
+            <h3>Nuevo punto de distribución en Colón</h3>
+          </div>
+          <div class="alert-desc">
+            <p>Disponible desde hoy en el Parque Bolívar, de lunes a viernes.</p>
+          </div>
+        </div>
+        <div class="news-footer">
+        <br>
+            <div class="news-location">
+                <img src="img/calendar-icon-news.png" alt="lugar" class="icon-news">
+                Colón
+            </div>
+
+            <div class="news-time">
+                <img src="img/time-icon-blue-news.png" alt="tiempo" class="icon-news">
+                8 AM – 4 PM
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- =========================================================
+
+FOOTER
+
+========================================================= -->
+<footer class="footer" id="nosotros">
+<div class="container">
+<div class="footer-grid">
+
+<!-- Brand -->
+<div class="footer-brand">
+<a href="#" class="nav-logo">
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px">
+<path d="M18 3C18 3 6 14.5 6 22C6 28.627 11.373 34 18 34C24.627 34 30 28.627 30 22C30 14.5 18 3Z" fill="url(#dropGrad2)" />
+<circle cx="20" cy="17" r="2.5" fill="white" opacity=".7" />
+<defs>
+<linearGradient id="dropGrad2" x1="6" y1="3" x2="30" y2="34" gradientUnits="userSpaceOnUse">
+<stop stop-color="#38B6E8"/><stop offset="1" stop-color="#0B7DBD"/>
+</linearGradient>
+</defs>
+</svg>
+<span class="nav-logo-text" style="color:white">Clear<span>Drop</span></span>
+</a>
+<p>Conectando comunidades con soluciones de agua limpia para un Panamá sostenible.</p>
+
+<div class="social-row">
+<a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+<a href="#" class="social-btn" aria-label="Instagram">📷</a>
+<a href="#" class="social-btn" aria-label="Facebook">f</a>
+<a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+</div>
+</div>
+
+<!-- Plataforma -->
+<div>
+<p class="footer-heading">Plataforma</p>
+<ul class="footer-links">
+<li><a href="#">Inicio</a></li>
+<li><a href="mapa.hmtl">Mapa interactivo</a></li>
+<li><a href="reportes.html">Reportar fuga</a></li>
+<li><a href="educacion.html">Educación</a></li>
+</ul>
+</div>
+
+<!-- Comunidad -->
+<div>
+<p class="footer-heading">Comunidad</p>
+<ul class="footer-links">
+<li><a href="voluntariado.html">Voluntariado</a></li>
+<li><a href="comunidad.html">Foros</a></li>
+<li><a href="voluntariado.html">Eventos</a></li>
+<li><a href="voluntariado.html">Blog ambiental</a></li>
+</ul>
+</div>
+
+<!-- Legal -->
+<div>
+<p class="footer-heading">Legal</p>
+<ul class="footer-links">
+<li><a href="pdf/ClearDrop_Terminos_y_Condiciones.pdf" target="_blank">Términos de uso</a></li>
+<li><a href="pdf/ClearDrop_Politica_Privacidad_GDPR.pdf" target="_blank">Privacidad</a></li>
+<li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+<li><a href="sobre-nosotros.html">Contacto</a></li>
+</ul>
+</div>
+</div>
+
+<div class="footer-bottom">
+<span>© 2026 ClearDrop. Todos los derechos reservados.</span>
+</div>
+</div>
+</footer>
+
+<!-- =========================================================
+
+FLOATING ACTION BUTTON
+
+========================================================= -->
+<a href="reportes.html" class="fab" aria-label="Reportar ahora">
+Reportar ahora
+</a>
+
+<!--<script src="script.js"></script>-->
+<script src="script.js" defer></script>
+<script src="tra.js" defer></script>
+<script src="auth.js"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAehDZcKKFUEwb3p1dW0iS8HtBbddp5efg&callback=initMap"></script>
+</body>
+</html>

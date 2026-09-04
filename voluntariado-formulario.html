@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Voluntariado - ClearDrop</title>
+    <link rel="stylesheet" href="voluntariado-formulario.css">
+    <!--Revisar y verificar el NAVBAR. Intenté colocarlo aquí, pero no funcionó
+    y se movió la página hacia arriba. Y si le coloco el style.css, la tipografía
+    cambia porque somete al voluntariado-formulario.css-->
+    
+    <!-- Método moderno recomendado (PNG) -->
+    <link rel="icon" type="image/png" href="img/ClearDrop-icon-250.png">
+
+    <!-- CDN de EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<!-- =========================================================
+
+NAVBAR
+
+========================================================= -->
+<nav class="navbar">
+<div class="container">
+
+<img src="img/Captura_de_pantalla_2026-05-28_153221-removebg-preview.png" class="nav-logo-nombre" alt="ClearDrop">
+
+<ul class="nav-links">
+
+  <!-- Inserta esto donde quieras el botón -->
+  <button id="langToggle" class="lang-toggle" aria-pressed="false" aria-label="Cambiar idioma">
+    <!-- Icono EN (puedes reemplazar por tu SVG o font-icon) -->
+      <span class="icon icon--en" aria-hidden="true">
+        <!-- Simple bandera/ico EN (UK/US style minimal) -->
+        <img src="img/english-icon.png">
+      </span>
+
+    <!-- Icono ES -->
+      <span class="icon icon--es" aria-hidden="true">
+        <img src="img/español-icon.png">
+      </span>
+
+    <span class="label">EN</span>
+  </button>
+
+  <li><a href="index.html">Inicio</a></li>
+  <li><a href="noticias.html">Noticias</a></li>
+  <li><a href="mapa.html">Mapas</a></li>
+  <li><a href="educacion.html">Educación</a></li>
+
+  <!-- Grupo: Comunidad y Voluntariado -->
+  <li class="nav-dropdown">
+    <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+      Únete
+      <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <ul class="nav-dropdown-menu">
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="voluntariado.html">Voluntariado</a></li>
+    </ul>
+  </li>
+
+  <li><a href="tienda.html">Tienda</a></li>
+  <li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+
+  <!-- Grupo: Mi perfil -->
+  <li class="nav-dropdown">
+  <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+    <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <ul class="nav-dropdown-perfil">
+    <li><p>noe.jn@gmail.com</p></li>
+    <li><a href="voluntariado.hmtl">Mi huella</a></li>
+    <li><a href="#configuracion">Configuración</a></li>
+  </ul>
+  </li>
+</ul>
+</div>
+</nav>
+
+<!-- Menú de hamburguesa para dispositivos móviles -->
+<button class="nav-hamburger" id="menuBtn" aria-label="Abrir menú">
+<span></span><span></span><span></span>
+</button>
+</ul>
+</div>
+</nav>
+
+<!-- Interfaz del nav en móviles -->
+<div class="mobile-nav" id="mobileNav">
+<button class="mobile-nav-close" id="menuClose">✕</button>
+<a href="index.html">Inicio</a>
+<a href="noticias.html">Noticias</a>
+<a href="mapa.html">Mapas</a>
+<a href="educacion.html">Educación</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+    Comunidad
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="comunidad.html">Comunidad</a>
+    <a href="voluntariado.html">Voluntariado</a>
+  </div>
+</div>
+
+<a href="tienda.html">Tienda</a>
+<a href="sobre-nosotros.html">Sobre nosotros</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+     <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="#cuenta">Mi cuenta</a>
+    <a href="#agregar">Agregar cuenta</a>
+    <a href="#cerrar-sesion">Cerrar sesión</a>
+  </div>
+</div>
+</div>
+
+    
+    <!-- ==========================================
+         CONTENEDOR PRINCIPAL DE LA PÁGINA
+         ========================================== -->
+    <div class="page-container">
+
+        <!-- ==========================================
+             HEADER / BANNER SUPERIOR
+             ========================================== -->
+        <header class="form-header">
+            <div class="header-decoration" aria-hidden="true">
+                <span class="deco-drop deco-drop-1">💧</span>
+                <span class="deco-drop deco-drop-2">🌱</span>
+            </div>
+            <div class="header-content">
+                <h1 class="form-title">Formulario de voluntariado</h1>
+                <p class="form-subtitle">
+                    Únete a nuestra comunidad y ayuda a construir un futuro con agua limpia y accesible para todos los distritos de Chiriquí.
+                </p>
+            </div>
+        </header>
+
+        <!-- ==========================================
+             FORMULARIO PRINCIPAL
+             ========================================== -->
+        <form id="volunteerForm" class="volunteer-form" novalidate>
+
+            <!-- ==========================================
+                 SECCIÓN 1: CORREO ELECTRÓNICO
+                 ========================================== -->
+            <section class="form-card">
+                <div class="section-header">
+                    <span class="section-number">1</span>
+                    <div>
+                        <h2 class="section-title">Correo electrónico</h2>
+                        <p class="section-description">Te mantendremos informados sobre oportunidades y actividades.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input
+                            type="email"
+                            id="correo"
+                            name="correo"
+                            class="form-input"
+                            placeholder="ejemplo@correo.com"
+                            required
+                        >
+                    </div>
+                    <span class="error-message" id="correo-error"></span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECCIÓN 2: DISTRITOS DE CHIRIQUÍ
+                 ========================================== -->
+            <section class="form-card">
+                <div class="section-header">
+                    <span class="section-number">2</span>
+                    <div>
+                        <h2 class="section-title">¿En qué distritos de Chiriquí podría operar?</h2>
+                        <p class="section-description">Selecciona uno o más distritos de la provincia.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="districts-grid" id="districts-grid" role="group" aria-labelledby="comunidades-label">
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Alanje" class="district-checkbox">
+                            <span>Alanje</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Barú" class="district-checkbox">
+                            <span>Barú</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Boquerón" class="district-checkbox">
+                            <span>Boquerón</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Boquete" class="district-checkbox">
+                            <span>Boquete</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Bugaba" class="district-checkbox">
+                            <span>Bugaba</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="David" class="district-checkbox">
+                            <span>David</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Dolega" class="district-checkbox">
+                            <span>Dolega</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Gualaca" class="district-checkbox">
+                            <span>Gualaca</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Remedios" class="district-checkbox">
+                            <span>Remedios</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Renacimiento" class="district-checkbox">
+                            <span>Renacimiento</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="San Félix" class="district-checkbox">
+                            <span>San Félix</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="San Lorenzo" class="district-checkbox">
+                            <span>San Lorenzo</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Tierras Altas" class="district-checkbox">
+                            <span>Tierras Altas</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Tolé" class="district-checkbox">
+                            <span>Tolé</span>
+                        </label>
+                        <label class="district-chip">
+                            <input type="checkbox" name="comunidades" value="Otros" id="otros-distrito-checkbox" class="district-checkbox">
+                            <span>Otros</span>
+                        </label>
+                    </div>
+                    <span class="error-message" id="comunidades-error"></span>
+                </div>
+
+                <!-- Campo de especificación para "Otros" distrito -->
+                <div class="form-group otros-group" id="otros-distrito-especificacion-group">
+                    <label class="form-label" for="otros_distrito_especificacion">Especifica el distrito o lugar <span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input
+                            type="text"
+                            id="otros_distrito_especificacion"
+                            name="otros_distrito_especificacion"
+                            class="form-input"
+                            placeholder="Escribe aquí..."
+                        >
+                    </div>
+                    <span class="error-message" id="otros_distrito_especificacion-error"></span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECCIÓN 3: DISPONIBILIDAD
+                 ========================================== -->
+            <section class="form-card">
+                <div class="section-header">
+                    <span class="section-number">3</span>
+                    <div>
+                        <h2 class="section-title">Disponibilidad de tiempo</h2>
+                        <p class="section-description">¿Cuándo estás disponible para ser voluntario?</p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group form-group-half">
+                        <label class="form-label" for="disponibilidad">Disponibilidad <span class="required-star">*</span></label>
+                        <div class="select-wrapper">
+                            <select
+                                id="disponibilidad"
+                                name="disponibilidad"
+                                class="form-select"
+                                required
+                            >
+                                <option value="" disabled selected>Selecciona tu disponibilidad</option>
+                                <option value="Lunes a viernes">Lunes a viernes</option>
+                                <option value="Fines de semana">Fines de semana</option>
+                                <option value="Flexible">Flexible</option>
+                                <option value="Solo mañanas">Solo mañanas</option>
+                                <option value="Solo tardes">Solo tardes</option>
+                                <option value="Otros">Otros (especificar)</option>
+                            </select>
+                        </div>
+                        <span class="error-message" id="disponibilidad-error"></span>
+                    </div>
+
+                    <div class="form-group form-group-half">
+                        <label class="form-label" for="horas_semana">Horas por semana <span class="required-star">*</span></label>
+                        <div class="select-wrapper">
+                            <select
+                                id="horas_semana"
+                                name="horas_semana"
+                                class="form-select"
+                                required
+                            >
+                                <option value="" disabled selected>Selecciona horas por semana</option>
+                                <option value="Menos de 5 horas">Menos de 5 horas</option>
+                                <option value="5 a 10 horas">5 a 10 horas</option>
+                                <option value="10 a 15 horas">10 a 15 horas</option>
+                                <option value="15 a 20 horas">15 a 20 horas</option>
+                                <option value="Más de 20 horas">Más de 20 horas</option>
+                                <option value="Otros">Otros (especificar)</option>
+                            </select>
+                        </div>
+                        <span class="error-message" id="horas_semana-error"></span>
+                    </div>
+                </div>
+
+                <!-- Campo de especificación para "Otros" en disponibilidad -->
+                <div class="form-group otros-group" id="otros-disponibilidad-especificacion-group">
+                    <label class="form-label" for="otros_disponibilidad_especificacion">Especifica tu disponibilidad <span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input
+                            type="text"
+                            id="otros_disponibilidad_especificacion"
+                            name="otros_disponibilidad_especificacion"
+                            class="form-input"
+                            placeholder="Escribe aquí..."
+                        >
+                    </div>
+                    <span class="error-message" id="otros_disponibilidad_especificacion-error"></span>
+                </div>
+
+                <!-- Campo de especificación para "Otros" en horas por semana -->
+                <div class="form-group otros-group" id="otros-horas-especificacion-group">
+                    <label class="form-label" for="otros_horas_especificacion">Especifica las horas disponibles <span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input
+                            type="text"
+                            id="otros_horas_especificacion"
+                            name="otros_horas_especificacion"
+                            class="form-input"
+                            placeholder="Escribe aquí..."
+                        >
+                    </div>
+                    <span class="error-message" id="otros_horas_especificacion-error"></span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECCIÓN 4: INFORMACIÓN PERSONAL
+                 ========================================== -->
+            <section class="form-card">
+                <div class="section-header">
+                    <span class="section-number">4</span>
+                    <div>
+                        <h2 class="section-title">Información personal</h2>
+                        <p class="section-description">Cuéntanos cómo te llamas.</p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group form-group-half">
+                        <label class="form-label" for="nombre">Nombre <span class="required-star">*</span></label>
+                        <div class="input-wrapper">
+                            <input
+                                type="text"
+                                id="nombre"
+                                name="nombre"
+                                class="form-input"
+                                placeholder="Escribe tu nombre"
+                                required
+                            >
+                        </div>
+                        <span class="error-message" id="nombre-error"></span>
+                    </div>
+
+                    <div class="form-group form-group-half">
+                        <label class="form-label" for="apellido">Apellido <span class="required-star">*</span></label>
+                        <div class="input-wrapper">
+                            <input
+                                type="text"
+                                id="apellido"
+                                name="apellido"
+                                class="form-input"
+                                placeholder="Escribe tu apellido"
+                                required
+                            >
+                        </div>
+                        <span class="error-message" id="apellido-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="telefono">Teléfono <span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input
+                            type="tel"
+                            id="telefono"
+                            name="telefono"
+                            class="form-input"
+                            placeholder="Ej. 6123-4567"
+                            required
+                        >
+                    </div>
+                    <span class="error-message" id="telefono-error"></span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECCIÓN 5: ÁREAS DE PARTICIPACIÓN
+                 ========================================== -->
+            <section class="form-card">
+                <div class="section-header">
+                    <span class="section-number">5</span>
+                    <div>
+                        <h2 class="section-title">¿En qué podría participar?</h2>
+                        <p class="section-description">Selecciona todas las actividades que apliquen.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="activities-grid">
+                        <label class="activity-checkbox">
+                            <input type="checkbox" name="actividades" value="Arreglar tuberías" class="checkbox-input">
+                            <span class="activity-label">Arreglar tuberías</span>
+                        </label>
+
+                        <label class="activity-checkbox">
+                            <input type="checkbox" name="actividades" value="Limpieza de áreas" class="checkbox-input">
+                            <span class="activity-label">Limpieza de áreas</span>
+                        </label>
+
+                        <label class="activity-checkbox">
+                            <input type="checkbox" name="actividades" value="Recolección de desechos" class="checkbox-input">
+                            <span class="activity-label">Recolección de desechos</span>
+                        </label>
+
+                        <label class="activity-checkbox">
+                            <input type="checkbox" name="actividades" value="Reforestación y siembra" class="checkbox-input">
+                            <span class="activity-label">Reforestación y siembra</span>
+                        </label>
+
+                        <label class="activity-checkbox">
+                            <input type="checkbox" name="actividades" value="Charlas y concienciación" class="checkbox-input">
+                            <span class="activity-label">Charlas y concienciación</span>
+                        </label>
+
+                        <label class="activity-checkbox">
+                            <input type="checkbox" name="actividades" value="Otros" id="otros-checkbox" class="checkbox-input">
+                            <span class="activity-icon">⋯</span>
+                            <span class="activity-label">Otros (Especificar)</span>
+                        </label>
+                    </div>
+                    <span class="error-message" id="actividades-error"></span>
+                </div>
+
+                <!-- Campo de especificación para "Otros" -->
+                <div class="form-group otros-group" id="otros-especificacion-group">
+                    <label class="form-label" for="otros_especificacion">Especifica otras actividades <span class="required-star">*</span></label>
+                    <div class="input-wrapper">
+                        <input
+                            type="text"
+                            id="otros_especificacion"
+                            name="otros_especificacion"
+                            class="form-input"
+                            placeholder="Escribe aquí..."
+                        >
+                    </div>
+                    <span class="error-message" id="otros_especificacion-error"></span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 SECCIÓN 6: MOTIVACIÓN
+                 ========================================== -->
+            <section class="form-card">
+                <div class="section-header">
+                    <span class="section-number">6</span>
+                    <div>
+                        <h2 class="section-title">¿Por qué quieres hacer voluntariado con ClearDrop?</h2>
+                        <p class="section-description">Cuéntanos tus motivos o razones.</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper textarea-wrapper">
+                        <textarea
+                            id="motivacion"
+                            name="motivacion"
+                            class="form-textarea"
+                            placeholder="Escribe aquí tus motivaciones..."
+                            rows="5"
+                            required
+                        ></textarea>
+                    </div>
+                    <span class="error-message" id="motivacion-error"></span>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 BOTÓN DE ENVÍO
+                 ========================================== -->
+            <div class="form-actions">
+                <button type="submit" class="submit-button" id="submitBtn">
+                    <span class="button-text">Registrarme como voluntario</span>
+                    <span class="button-icon">→</span>
+                </button>
+                <p class="security-message">Tu información está segura con nosotros.</p>
+            </div>
+
+            <!-- ==========================================
+                 MENSAJE DE ESTADO
+                 ========================================== -->
+            <div class="status-message" id="statusMessage" role="alert"></div>
+
+        </form>
+    </div>
+
+    <!-- Script del formulario -->
+    <script src="auth.js"></script>
+    <script src="voluntariado-formulario.js"></script>
+    <script src="tradu.js"></script>
+</body>
+</html>

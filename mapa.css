@@ -1,0 +1,1369 @@
+/* ==========================================================================
+   CLEARDROP — HOJA DE ESTILOS
+   ==========================================================================
+   Índice:
+   1. Variables / Reset
+   2. Header / Navegación
+   3. Layout general (sidebar + mapa)
+   4. Sidebar — Filtros
+   5. Panel de mapa — cabecera, buscador, vista
+   6. Contenedor del mapa (placeholder + marcadores)
+   7. Controles del mapa, contador, resumen
+   8. Tarjeta de detalle (popup)
+   9. Widget "reportar afectación"
+   10. Responsive
+   ========================================================================== */
+
+/* -------------------------------- 1. Variables / Reset ------------------ */
+:root {
+  --blue-600: #1d6fe0;
+  --blue-700: #1657b3;
+  --blue-50: #eef5ff;
+  --ink-900: #12203b;
+  --ink-700: #33415c;
+  --ink-500: #6b7789;
+  --ink-300: #a7b0bd;
+  --line: #e6e9ef;
+  --bg: #f5f7fa;
+  --white: #ffffff;
+
+  --red: #e0422f;
+  --red-bg: #fdecea;
+  --orange: #f2994a;
+  --orange-bg: #fdf1e4;
+  --purple: #8b5cf6;
+  --purple-bg: #f2edfe;
+  --green: #2f9e5b;
+  --green-bg: #e9f7ee;
+  --brown: #8a6240;
+  --brown-bg: #f1e9e0;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --shadow-card: 0 10px 30px rgba(18, 32, 59, 0.10);
+  --shadow-soft: 0 2px 10px rgba(18, 32, 59, 0.06);
+
+  /* ---- Variables de marca ClearDrop (mismas que la página principal) ----
+     Se usan específicamente en la navbar y el footer, para que ambos
+     bloques luzcan idénticos en todas las páginas del sitio. */
+  --blue-deep: #0B3D6E;
+  --blue-mid: #1A6FA8;
+  --blue-sky: #38B6E8;
+  --teal: #00C9B1;
+  --text-dark: #0D2233;
+  --text-body: #3A5368;
+  --gray-light: #E8F2FB;
+  --shadow-md: 0 8px 32px rgba(11, 61, 110, .14);
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --nav-h: 72px;
+  --transition: 0.3s cubic-bezier(.4, 0, .2, 1);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink-900);
+  font-family: "Manrope", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img { max-width: 100%; display: block; }
+
+svg, [data-lucide] { width: 18px; height: 18px; stroke-width: 2; }
+
+/* -------------------------------- 2. Header / Navegación ----------------- */
+
+/* Utilidad de ancho compartida con la página principal */
+.container {
+  width: min(1180px, 92vw);
+  margin-inline: auto;
+}
+
+@keyframes navReveal {
+  from { opacity: 0; transform: translateY(-100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+
+Barra de navegación (NAV BAR)
+
+============================================================ */
+.navbar {
+position: fixed;
+inset-block-start: 0;
+inset-inline: 0;
+height: var(--nav-h);
+background: rgba(255,255,255,.88);
+backdrop-filter: blur(16px) saturate(180%);
+-webkit-backdrop-filter: blur(16px) saturate(180%);
+border-bottom: 1px solid rgba(56,182,232,.12);
+z-index: 1000;
+animation: navReveal .5s ease both;
+}
+
+.navbar .container {
+height: 100%;
+display: flex;
+align-items: center;
+gap: 2rem;
+}
+
+/* Logo */
+.nav-logo-nombre {
+display: flex;
+align-items: center;
+gap: .55rem;
+flex-shrink: 0;
+height: 65px;
+width: 275px;
+}
+
+.nav-logo {
+display: flex;
+align-items: center;
+gap: .55rem;
+flex-shrink: 0;
+height: 50px;
+width: 65px;
+}
+
+/* Links */
+.nav-links {
+display: flex;
+align-items: center;
+gap: .15rem;
+margin-inline-start: auto;
+}
+
+.nav-links a {
+position: relative;
+font-size: .9rem;
+font-weight: 500;
+color: var(--text-body);
+padding: .45rem .9rem;
+border-radius: var(--radius-sm);
+transition: color var(--transition), background var(--transition);
+white-space: nowrap;
+}
+
+.nav-links a:hover {
+color: var(--blue-mid);
+background: rgba(56,182,232,.1);
+}
+
+.nav-links a.active { color: var(--blue-mid); font-weight: 700; }
+
+/* Línea inferior */
+.nav-links a::after {
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-6px; 
+
+    width:0;
+    height:3px;
+
+    background:var(--primary-blue);
+
+    border-radius: 100px;
+
+    transform:translateX(-50%);
+    transition:.3s;
+}
+
+/* Aparece al hacer hover */
+.nav-links a:hover::after {
+    width:70%;
+}
+
+/* Permanece cuando está activa */
+.nav-links a.active::after {
+    width:70%;
+}
+/* ============================================================
+
+Dropdowns agrupados del navbar (Novedades / Comunidad)
+
+============================================================ */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  background: none;
+  font-family: var(--font-body);
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--text-body);
+  padding: .45rem .9rem;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+  white-space: nowrap;
+}
+
+.nav-dropdown-toggle:hover,
+.nav-dropdown-toggle:focus-visible {
+  color: var(--blue-mid);
+  background: rgba(56,182,232,.1);
+  outline: none;
+}
+
+/* Flechita: gira al abrir, ya sea por hover o por click */
+.dropdown-arrow {
+  flex-shrink: 0;
+  transition: transform var(--transition);
+  order: 2;
+}
+
+.nav-dropdown:hover .dropdown-arrow,
+.nav-dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* Cajón (panel) del dropdown */
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100%);
+  left: 0;
+  min-width: 190px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1.5px solid var(--gray-light);
+  padding: .5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+  pointer-events: none;
+  z-index: 1001;
+}
+
+
+/* --- AVATAR DE PERFIL --- */
+.post-avatar{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* --- DROPDOWN DE PERFIL (le faltaba todo su estilo) --- */
+.nav-dropdown-perfil{
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 190px;
+  list-style: none;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: var(--shadow-hover);
+  border: 1px solid var(--border-soft);
+  padding: .5rem;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+  pointer-events: none;
+  z-index: 1001;
+}
+
+.nav-dropdown:hover .nav-dropdown-perfil,
+.nav-dropdown.open .nav-dropdown-perfil{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-dropdown-perfil li p{
+  margin: 0 0 .4rem;
+  padding: .5rem .75rem 0;
+  font-size: .78rem;
+  color: var(--ink-soft);
+  word-break: break-all;
+/*  border-bottom: 1px solid var(--border-soft); */
+  padding-bottom: .5rem;
+}
+
+.nav-dropdown-perfil li a{
+  display: block;
+  font-size: .85rem;
+  font-weight: 500;
+  color: var(--ink);
+  padding: .5rem .75rem;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.nav-dropdown-perfil li a:hover{
+  color: var(--teal-dark);
+  background: rgba(23,135,158,.08);
+}
+
+/* Se abre con hover (mouse) O con la clase .open (click/teclado) */
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown.open .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-dropdown:hover .nav-dropdown-perfil,
+.nav-dropdown.open .nav-dropdown-menu-perfil {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-dropdown-menu li a {
+  display: block;
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--text-body);
+  padding: .55rem .75rem;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+}
+
+.nav-dropdown-perfil li a {
+  display: block;
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--text-body);
+  padding: .55rem .75rem;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+}
+
+.nav-dropdown-menu li a:hover {
+  color: var(--blue-mid);
+  background: rgba(56,182,232,.1);
+}
+
+.nav-dropdown-perfil li a:hover {
+  color: var(--blue-mid);
+  background: rgba(56,182,232,.1);
+}
+
+/* CTA button in nav */
+.nav-cta {
+display: inline-flex;
+align-items: center;
+gap: .4rem;
+background: var(--blue-sky);
+color: var(--white) !important;
+padding: .5rem 1.1rem !important;
+border-radius: 99px !important;
+font-weight: 600 !important;
+box-shadow: 0 4px 16px rgba(56,182,232,.38);
+transition: transform var(--transition), box-shadow var(--transition) !important;
+}
+
+.nav-cta:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 24px rgba(56,182,232,.48) !important;
+background: #2aabd9 !important;
+}
+
+/* Hamburger (mobile) */
+.nav-hamburger {
+display: none;
+flex-direction: column;
+gap: 5px;
+margin-inline-start: auto;
+padding: 6px;
+cursor: pointer;
+background: none;
+border: none;
+}
+
+.nav-hamburger span {
+width: 24px; height: 2px;
+background: var(--blue-deep);
+border-radius: 2px;
+transition: var(--transition);
+z-index: 1000;
+}
+
+/* Botón circular genérico (usado, p. ej., en el cierre de la tarjeta de detalle) */
+.detail-card__top .icon-btn--ghost {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  width: 36px;
+  height: 36px;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2002;
+  border: none;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  transition: all var(--transition);
+}
+
+.detail-card__top .icon-btn--ghost:hover {
+  background: rgba(0, 0, 0, 0.16);
+  transform: rotate(90deg);
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink-700);
+  display: grid;
+  place-items: center;
+}
+
+/* La app (sidebar + mapa) queda debajo de la navbar fija */
+body { padding-top: var(--nav-h); }
+
+/* -------------------------------- 3. Layout general ----------------------*/
+.app-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  /* min-height (no height fijo): así, si el contenido interno llega a medir
+     un poco más que la pantalla, el layout crece en vez de desbordarse de
+     golpe justo antes del footer. */
+  min-height: calc(100vh - var(--nav-h));    /* fallback para navegadores viejos */
+  min-height: calc(100dvh - var(--nav-h));   /* alto dinámico real: evita el "salto"
+                                                 al ocultarse la barra de direcciones
+                                                 del navegador en móviles */
+}
+
+/* -------------------------------- 4. Sidebar — Filtros -------------------*/
+/* ==========================================================
+   ÍCONO DE FILTRO: Contaminación del agua
+   ========================================================== */
+/* Ícono específico de "Afectación a ecosistemas" */
+.filter-icon--ecosistemas {
+  overflow: hidden;
+}
+
+.filter-icon__img--bajap{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.5);
+  border-radius: 50%;
+  display: block;
+}
+
+.filter-icon__img--ecosistemas {
+  width: 150%;
+  height: 150%;
+  object-fit: cover; transform: scale(1.4);
+  border-radius: 100%;
+  display: block;
+}
+
+.filter-icon__img--otros{
+  
+  width: 100%;
+  height: 100%;
+  object-fit: cover; transform: scale(1.4);
+  border-radius: 100%;
+  display: block;
+}
+
+.filter-icon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.filter-icon__img {
+  width: 34px;
+  height: 34px;
+ object-fit: cover; transform: scale(1.4);
+  border-radius: 50%;
+  display: block;
+}
+
+.filter-icon--blue {
+  background: rgba(56, 182, 232, 0.12);
+  color: #0B7DBD;
+}
+
+.sidebar {
+  border-right: 1px solid var(--line);
+  background: var(--white);
+  padding: 22px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sidebar {
+  border-right: 1px solid var(--line);
+  background: var(--white);
+  padding: 22px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 320px;
+  flex-shrink: 0;
+  transition: width .25s ease, padding .25s ease;
+}
+
+
+.sidebar__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sidebar__header h2 {
+  margin: 0 0 4px;
+  font-size: 19px;
+}
+
+.sidebar__subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-500);
+  line-height: 1.4;
+}
+
+.link-btn {
+  border: none;
+  background: none;
+  color: var(--ink-500);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.filter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 1000px;
+  overflow: hidden;
+  transition: max-height .25s ease, opacity .2s ease;
+  opacity: 1;
+}
+
+.filter-list--collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+.filter-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.filter-icon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.filter-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+/*borde iconos filtro */
+.filter-icon--red { background: var(--red-bg); color: var(--red); }
+.filter-icon--orange { background: var(--orange-bg); color: var(--orange); }
+
+.filter-icon--green { background: var(--green-bg); color: var(--green); }
+.filter-icon--brown { background: var(--brown-bg); color: var(--brown); }
+
+.filter-copy { flex: 1; }
+
+.filter-copy__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.filter-count {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.info-hint {
+  width: 14px;
+  height: 14px;
+  color: var(--ink-300);
+}
+
+.filter-copy p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ink-500);
+  line-height: 1.4;
+}
+
+.switch {
+  width: 36px;
+  height: 20px;
+  min-width: 36px;
+  border-radius: 999px;
+  background: var(--line);
+  border: none;
+  position: relative;
+  transition: background .15s ease;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--white);
+  transition: left .15s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+
+.switch--on { background: var(--blue-600); }
+.switch--on::after { left: 18px; }
+
+.clear-filters-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink-700);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.promo-card {
+  margin-top: auto;
+  background: var(--blue-50);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+}
+
+.promo-card__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--blue-600);
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+}
+
+.promo-card h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.promo-card p {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--ink-700);
+  line-height: 1.45;
+}
+
+.promo-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--blue-600);
+  font-weight: 600;
+}
+
+/* Sidebar toggle para móvil */
+.sidebar-toggle-btn {
+  display: none;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-900);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.sidebar-toggle-btn:hover {
+  background: var(--blue-50);
+}
+
+/* Sidebar overlay para móvil */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 998;
+}
+
+.sidebar-overlay.open {
+  display: block;
+}
+
+/* Sidebar móvil */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: 300px;
+    height: 100vh;
+    z-index: 999;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    border-right: 1px solid var(--line);
+    background: var(--white);
+    padding: 22px 20px;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .sidebar-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sidebar-overlay.open {
+    display: block;
+  }
+}
+
+/* -------------------------------- 5. Panel de mapa — cabecera ------------*/
+.map-panel {
+  position: relative;
+  padding: 22px 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.map-panel__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.map-panel__header h1 {
+  margin: 0 0 2px;
+  font-size: 24px;
+  font-family: Syne, sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: black;
+}
+
+.map-panel__header p {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 13.5px;
+}
+
+.map-panel__viewToggle {
+  margin-left: auto;
+  display: flex;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink-500);
+}
+
+.view-btn--active {
+  background: var(--blue-50);
+  color: var(--blue-600);
+}
+
+.legend-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink-900);
+}
+
+/* Barra de búsqueda flotante */
+.map-search {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 16px;
+  box-shadow: var(--shadow-soft);
+  width: 260px;
+  color: var(--ink-500);
+}
+
+.map-search input {
+  border: none;
+  outline: none;
+  font-size: 13.5px;
+  width: 100%;
+  color: var(--ink-900);
+  background: transparent;
+}
+
+/* -------------------------------- 6. Contenedor del mapa -----------------*/
+.map-container {
+  position: relative;
+  flex: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  min-height: 520px;
+}
+
+/*
+  ------------------------------------------------------------------
+  MAPA REAL (Leaflet + OpenStreetMap)
+  ------------------------------------------------------------------
+  #leafletMap es el elemento que Leaflet toma para dibujar los tiles
+  (las "baldosas" de imagen del mapa). Debe ocupar todo el contenedor
+  y tener una altura explícita (heredada de .map-container, que es
+  position:relative + flex:1).
+  ------------------------------------------------------------------
+*/
+.leaflet-map {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #cfe3c8; /* color de respaldo mientras cargan los tiles */
+}
+
+/* Ocultamos los controles nativos de Leaflet (zoom +/-, atribución se
+   mantiene por requerimiento de OpenStreetMap) porque el diseño usa
+   sus propios botones flotantes (.map-controls). */
+.leaflet-control-zoom { display: none; }
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  background: rgba(255,255,255,0.75) !important;
+}
+
+/* --------------------------------------------------------------
+   Marcadores de afectaciones (creados como L.divIcon en script.js)
+   -------------------------------------------------------------- */
+.marker-pin {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid var(--white);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  display: grid;
+  place-items: center;
+  color: var(--white);
+}
+
+.marker-pin--red { background: var(--red); }
+.marker-pin--orange { background: var(--orange); }
+.marker-pin--purple { background: var(--purple); }
+.marker-pin--green { background: var(--green); }
+.marker-pin--brown { background: var(--brown); }
+
+.marker-pin--selected {
+  width: 42px;
+  height: 42px;
+  box-shadow: 0 0 0 6px rgba(224,66,47,0.18), 0 3px 10px rgba(0,0,0,0.3);
+}
+
+.marker-pin svg { width: 16px; height: 16px; }
+.marker-pin--selected svg { width: 20px; height: 20px; }
+
+/* -------------------------------- 7. Controles, contador, resumen --------*/
+.map-controls {
+  position: absolute;
+  right: 16px;
+  bottom: 90px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.map-control-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink-700);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.map-control-btn--floating { border-radius: 50%; }
+
+.counter-card {
+  position: absolute;
+  left: 16px;
+  bottom: 20px;
+  z-index: 20;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 12px 16px;
+  min-width: 190px;
+}
+
+.counter-card__number {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-700);
+}
+
+.counter-card__number strong {
+  font-size: 22px;
+  color: var(--ink-900);
+}
+
+.counter-chevron { margin-left: auto; width: 14px; height: 14px; }
+
+.counter-card__updated {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--ink-300);
+  margin-top: 6px;
+}
+
+.counter-card__updated svg { width: 13px; height: 13px; }
+
+.summary-bar {
+  position: absolute;
+  left: 30%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: var(--white);
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-700);
+  white-space: nowrap;
+}
+
+.summary-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.summary-chip svg { width: 15px; height: 15px; }
+.c-red { color: var(--red); }
+.c-blue { color: var(--blue); }
+.c-orange { color: var(--orange); }
+.c-purple { color: var(--purple); }
+.c-green { color: var(--green); }
+.c-brown { color: var(--brown); }
+
+/* -------------------------------- 8. Tarjeta de detalle (popup) ----------*/
+.detail-card {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  z-index: 30;
+  width: 300px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+/* Tarjeta de detalle en móvil */
+@media (max-width: 768px) {
+  .detail-card {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 100;
+  }
+  .detail-card.open {
+    transform: translateY(0);
+  }
+}
+
+.detail-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.tag--red { background: var(--red-bg); color: var(--red); }
+
+.detail-card__title {
+  margin: 0 0 6px;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.marker-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--white);
+}
+.marker-dot--red { background: var(--red); }
+.marker-dot svg { width: 12px; height: 12px; }
+
+.detail-card__place {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  color: var(--ink-500);
+}
+.detail-card__place svg { width: 13px; height: 13px; }
+
+.detail-card__desc {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--ink-700);
+  line-height: 1.5;
+}
+
+.detail-card__updated {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--ink-300);
+  margin: 0 0 12px;
+}
+.detail-card__updated svg { width: 12px; height: 12px; }
+
+.detail-card__image {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 140px;
+  margin-bottom: 12px;
+}
+.detail-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-card__impact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.impact-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.impact-badge--alto { background: var(--red-bg); color: var(--red); }
+.impact-badge--medio { background: var(--orange-bg); color: var(--orange); }
+.impact-badge--bajo { background: var(--green-bg); color: var(--green); }
+
+.detail-card__meta {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--ink-500);
+  margin-bottom: 14px;
+}
+.detail-card__meta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.detail-card__meta svg { width: 13px; height: 13px; }
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--blue-600);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.btn-primary:hover { background: var(--blue-700); }
+.btn-primary--full { width: 100%; }
+
+/* -------------------------------- 9. Widget "reportar afectación" --------*/
+.report-widget {
+  position: absolute;
+  bottom: 20px;
+  right: 80px;
+  z-index: 25;
+  width: 250px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.report-widget__icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--blue-50);
+  color: var(--blue-600);
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+}
+.report-widget__icon svg { width: 15px; height: 15px; }
+
+.report-widget h4 {
+  margin: 0 0 4px;
+  font-size: 14.5px;
+}
+
+.report-widget p {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  color: var(--ink-500);
+}
+
+/* -------------------------------- 10. Responsive -------------------------*/
+@media (max-width: 1080px) {
+  .detail-card, .report-widget { display: none; } /* evita solaparse en pantallas chicas */
+}
+
+@media (max-width: 900px) {
+  .app-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; } /* en móvil, filtros se ocultarían tras un botón (fuera de alcance de este mockup) */
+  .summary-bar { display: none; }
+}
+
+/* Ajustes responsive móvil - sidebar visible con toggle */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  
+  .app-layout { grid-template-columns: 1fr; }
+  .sidebar { display: flex; left: -100%; }
+  .sidebar.open { left: 0; }
+  .summary-bar { display: none; }
+  .detail-card, .report-widget { display: block; }
+}
+
+/* ==========================================================================
+   11. FOOTER (idéntico en estructura y estilo al de la página principal)
+   ========================================================================== */
+.footer {
+  background: var(--text-dark);
+  padding: 3.5rem 0 1.5rem;
+  color: rgba(255, 255, 255, .6);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.footer-brand p {
+  font-size: .85rem;
+  color: rgba(255, 255, 255, .5);
+  margin-top: .8rem;
+  line-height: 1.7;
+  max-width: 240px;
+}
+
+.footer-brand .nav-logo-text { color: var(--white); }
+
+.footer-heading {
+  font-family: var(--font-head);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .3);
+  margin-bottom: 1rem;
+}
+
+.footer-links { list-style: none; margin: 0; padding: 0; }
+
+.footer-links a {
+  display: block;
+  font-size: .88rem;
+  color: rgba(255, 255, 255, .55);
+  margin-bottom: .55rem;
+  transition: color var(--transition);
+}
+.footer-links a:hover { color: var(--blue-sky); }
+
+.footer-bottom {
+  padding-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .8rem;
+  font-size: .8rem;
+}
+
+.footer-bottom span { color: rgba(255, 255, 255, .3); }
+.footer-bottom a { color: var(--blue-sky); }
+
+/* Íconos sociales */
+.social-row {
+  display: flex;
+  gap: .6rem;
+  margin-top: 1rem;
+}
+
+.social-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .08);
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, .5);
+  font-size: .9rem;
+  text-decoration: none;
+  transition: background var(--transition), color var(--transition);
+}
+
+.social-btn:hover {
+  background: var(--blue-sky);
+  color: var(--white);
+}
+
+@media (max-width: 1024px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}

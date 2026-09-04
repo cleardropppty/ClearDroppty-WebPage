@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Crear cuenta - ClearDrop</title>
+<meta name="description" content="Crea tu cuenta en ClearDrop y únete a nuestra comunidad"/>
+
+<link rel="icon" type="image/png" href="img/ClearDrop-icon-250.png">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+<!-- =========================================================
+NAVBAR
+========================================================= -->
+<nav class="navbar">
+<div class="container">
+
+<img src="img/Captura_de_pantalla_2026-05-28_153221-removebg-preview.png" class="nav-logo-nombre" alt="ClearDrop">
+
+<ul class="nav-links">
+
+  <button id="langToggle" class="lang-toggle" aria-pressed="false" aria-label="Cambiar idioma">
+    <!-- Icono EN (puedes reemplazar por tu SVG o font-icon) -->
+      <span class="icon icon--en" aria-hidden="true">
+        <!-- Simple bandera/ico EN (UK/US style minimal) -->
+        <img src="img/english-icon.png">
+      </span>
+
+    <!-- Icono ES -->
+      <span class="icon icon--es" aria-hidden="true">
+        <img src="img/español-icon.png">
+      </span>
+
+    <span class="label">EN</span>
+  </button>
+
+<link rel="stylesheet" href="lang-toggle.css">
+<script src="lang-toggle.js" defer></script>
+
+  <li><a href="index.html">Inicio</a></li>
+  <li><a href="noticias.html">Noticias</a></li>
+  <li><a href="mapa.html">Mapas</a></li>
+  <li><a href="educacion.html">Educación</a></li>
+
+  <li class="nav-dropdown">
+    <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+      Únete
+      <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <ul class="nav-dropdown-menu">
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="voluntariado.html">Voluntariado</a></li>
+    </ul>
+  </li>
+
+  <li><a href="tienda.html">Tienda</a></li>
+  <li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+
+  <li class="nav-dropdown">
+  <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+    <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <ul class="nav-dropdown-perfil">
+    <li><p>noe.jn@gmail.com</p></li>
+    <li><a href="voluntariado.html">Mi huella</a></li>
+    <li><a href="#configuracion">Configuración</a></li>
+  </ul>
+  </li>
+</ul>
+</div>
+</nav>
+
+<!-- Menú de hamburguesa para dispositivos móviles -->
+<button class="nav-hamburger" id="menuBtn" aria-label="Abrir menú">
+<span></span><span></span><span></span>
+</button>
+
+<!-- Interfaz del nav en móviles -->
+<div class="mobile-nav" id="mobileNav">
+<button class="mobile-nav-close" id="menuClose">✕</button>
+<a href="index.html">Inicio</a>
+<a href="noticias.html">Noticias</a>
+<a href="mapa.html">Mapas</a>
+<a href="educacion.html">Educación</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+    Comunidad
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="comunidad.html">Comunidad</a>
+    <a href="voluntariado.html">Voluntariado</a>
+  </div>
+</div>
+
+<a href="tienda.html">Tienda</a>
+<a href="sobre-nosotros.html">Sobre nosotros</a>
+
+<div class="mobile-nav-group">
+  <button class="mobile-nav-toggle" type="button" aria-expanded="false">
+     <img src="img/perfil hombre.png" class="post-avatar">
+    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+  <div class="mobile-nav-submenu">
+    <a href="login.html">Iniciar sesión</a>
+    <a href="registro.html">Crear cuenta</a>
+  </div>
+</div>
+</div>
+
+<!-- =========================================================
+MAIN CONTENT
+========================================================= -->
+<main class="auth-main">
+<div class="container">
+
+<!-- Sección de Formulario -->
+<div class="auth-form-section">
+
+  <!-- Encabezado -->
+  <div class="auth-header">
+    <h1 class="auth-title">Únete a ClearDrop</h1>
+    <p class="auth-subtitle">Crea tu cuenta para conectar con nuestra comunidad ambiental</p>
+  </div>
+
+  <!-- Formulario -->
+  <form class="auth-form" id="registerForm">
+    
+    <!-- Nombre completo -->
+    <div class="form-group">
+      <label for="name" class="form-label">Nombre completo</label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name" 
+        class="form-input"
+        placeholder="Juan Pérez"
+        required
+      >
+      <span class="form-error" id="nameError"></span>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        class="form-input"
+        placeholder="tu@correo.com"
+        required
+      >
+      <span class="form-error" id="emailError"></span>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="form-group">
+      <label for="password" class="form-label">Contraseña</label>
+      <div class="password-wrapper">
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-input"
+          placeholder="••••••••"
+          required
+        >
+        <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar/ocultar contraseña">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+      <span class="form-hint">Mínimo 6 caracteres</span>
+      <span class="form-error" id="passwordError"></span>
+    </div>
+
+    <!-- Confirmar contraseña -->
+    <div class="form-group">
+      <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
+      <div class="password-wrapper">
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          name="confirmPassword" 
+          class="form-input"
+          placeholder="••••••••"
+          required
+        >
+        <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="Mostrar/ocultar contraseña">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+      <span class="form-error" id="confirmPasswordError"></span>
+    </div>
+
+    <!-- Términos y condiciones -->
+    <div class="form-checkbox">
+      <label class="checkbox-label">
+        <input type="checkbox" id="terms" name="terms" required>
+        <span>Acepto los <a href="pdf/ClearDrop_Terminos_y_Condiciones.pdf" target="_blank" class="link-secondary">términos y condiciones</a> de ClearDrop</span>
+      </label>
+      <span class="form-error" id="termsError"></span>
+    </div>
+
+    <!-- Privacidad -->
+    <div class="form-checkbox">
+      <label class="checkbox-label">
+        <input type="checkbox" id="privacy" name="privacy" required>
+        <span>Acepto la <a href="pdf/ClearDrop_Politica_Privacidad_GDPR.pdf" target="_blank" class="link-secondary">política de privacidad</a></span>
+      </label>
+      <span class="form-error" id="privacyError"></span>
+    </div>
+
+    <!-- Mensaje de error general -->
+    <div class="form-message" id="formMessage"></div>
+
+    <!-- Botón submit -->
+    <button type="submit" class="btn-submit" id="submitBtn">
+      <span class="btn-text">Crear cuenta</span>
+      <span class="btn-spinner" id="btnSpinner" style="display: none;">
+        <svg class="spinner" width="18" height="18" viewBox="0 0 50 50">
+          <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-dasharray="30.99 94.25" />
+        </svg>
+      </span>
+    </button>
+  </form>
+
+  <!-- Divider -->
+  <div class="form-divider">
+    <span>¿Ya tienes cuenta?</span>
+  </div>
+
+  <!-- Enlace a login -->
+  <a href="login.html" class="btn-secondary-full">
+    Iniciar sesión
+  </a>
+
+</div>
+
+<!-- Sección Visual (solo desktop) -->
+<div class="auth-visual-section">
+  <div class="auth-visual-content">
+    <div class="auth-visual-blob auth-visual-blob-1"></div>
+    <div class="auth-visual-blob auth-visual-blob-2"></div>
+    
+    <div class="auth-visual-card">
+      <div class="visual-icon">
+        <img src="img/ClearDrop-icon-250.png">
+      </div>
+      
+      <h3 class="visual-title">¡Bienvenido!</h3>
+      <p class="visual-description">Únete a nuestra comunidad y contribuye a un Panamá más sostenible</p>
+      
+      <div class="visual-benefits">
+        <div class="benefit">
+          <span class="benefit-icon">✓</span>
+          <span class="benefit-text">Reporta problemas de agua</span>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">✓</span>
+          <span class="benefit-text">Accede a recursos educativos</span>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">✓</span>
+          <span class="benefit-text">Únete como voluntario</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</main>
+
+<!-- =========================================================
+FOOTER
+========================================================= -->
+<footer class="footer" id="nosotros">
+<div class="container">
+<div class="footer-grid">
+
+<!-- Brand -->
+<div class="footer-brand">
+<a href="#" class="nav-logo">
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px">
+<path d="M18 3C18 3 6 14.5 6 22C6 28.627 11.373 34 18 34C24.627 34 30 28.627 30 22C30 14.5 18 3Z" fill="url(#dropGrad2)" />
+<circle cx="20" cy="17" r="2.5" fill="white" opacity=".7" />
+<defs>
+<linearGradient id="dropGrad2" x1="6" y1="3" x2="30" y2="34" gradientUnits="userSpaceOnUse">
+<stop stop-color="#38B6E8"/><stop offset="1" stop-color="#0B7DBD"/>
+</linearGradient>
+</defs>
+</svg>
+<span class="nav-logo-text" style="color:white">Clear<span>Drop</span></span>
+</a>
+<p>Conectando comunidades con soluciones de agua limpia para un Panamá sostenible.</p>
+
+<div class="social-row">
+<a href="#" class="social-btn" aria-label="Twitter">𝕏</a>
+<a href="#" class="social-btn" aria-label="Instagram">📷</a>
+<a href="#" class="social-btn" aria-label="Facebook">f</a>
+<a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+</div>
+</div>
+
+<!-- Plataforma -->
+<div>
+<p class="footer-heading">Plataforma</p>
+<ul class="footer-links">
+<li><a href="index.html">Inicio</a></li>
+<li><a href="mapa.html">Mapa interactivo</a></li>
+<li><a href="reportes.html">Reportar fuga</a></li>
+<li><a href="educacion.html">Educación</a></li>
+</ul>
+</div>
+
+<!-- Comunidad -->
+<div>
+<p class="footer-heading">Comunidad</p>
+<ul class="footer-links">
+<li><a href="voluntariado.html">Voluntariado</a></li>
+<li><a href="comunidad.html">Foros</a></li>
+<li><a href="voluntariado.html">Eventos</a></li>
+<li><a href="voluntariado.html">Blog ambiental</a></li>
+</ul>
+</div>
+
+<!-- Legal -->
+<div>
+<p class="footer-heading">Legal</p>
+<ul class="footer-links">
+<li><a href="pdf/ClearDrop_Terminos_y_Condiciones.pdf" target="_blank">Términos de uso</a></li>
+<li><a href="pdf/ClearDrop_Politica_Privacidad_GDPR.pdf" target="_blank">Privacidad</a></li>
+<li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+<li><a href="sobre-nosotros.html">Contacto</a></li>
+</ul>
+</div>
+</div>
+
+<div class="footer-bottom">
+<span>© 2026 ClearDrop. Todos los derechos reservados.</span>
+</div>
+</div>
+</footer>
+
+<!-- Script de manejo del formulario -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('registerForm');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirmPassword');
+  const togglePasswordBtn = document.getElementById('togglePassword');
+  const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPassword');
+  const termsCheckbox = document.getElementById('terms');
+  const privacyCheckbox = document.getElementById('privacy');
+  const submitBtn = document.getElementById('submitBtn');
+  const formMessage = document.getElementById('formMessage');
+
+  // Toggle visibilidad de contraseña
+  togglePasswordBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+  });
+
+  toggleConfirmPasswordBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
+    confirmPasswordInput.type = type;
+  });
+
+  // Validación en tiempo real: confirmar que las contraseñas coincidan
+  confirmPasswordInput.addEventListener('blur', () => {
+    if (passwordInput.value && confirmPasswordInput.value) {
+      if (passwordInput.value !== confirmPasswordInput.value) {
+        document.getElementById('confirmPasswordError').textContent = 'Las contraseñas no coinciden.';
+      } else {
+        document.getElementById('confirmPasswordError').textContent = '';
+      }
+    }
+  });
+
+  // Envío del formulario
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    // Limpiar errores previos
+    document.getElementById('nameError').textContent = '';
+    document.getElementById('emailError').textContent = '';
+    document.getElementById('passwordError').textContent = '';
+    document.getElementById('confirmPasswordError').textContent = '';
+    document.getElementById('termsError').textContent = '';
+    document.getElementById('privacyError').textContent = '';
+    formMessage.textContent = '';
+    formMessage.className = 'form-message';
+
+    // Validaciones
+    if (!name) {
+      document.getElementById('nameError').textContent = 'El nombre es obligatorio.';
+      return;
+    }
+
+    if (!email) {
+      document.getElementById('emailError').textContent = 'El correo es obligatorio.';
+      return;
+    }
+
+    if (!password) {
+      document.getElementById('passwordError').textContent = 'La contraseña es obligatoria.';
+      return;
+    }
+
+    if (!confirmPassword) {
+      document.getElementById('confirmPasswordError').textContent = 'Confirma tu contraseña.';
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      document.getElementById('confirmPasswordError').textContent = 'Las contraseñas no coinciden.';
+      return;
+    }
+
+    if (!termsCheckbox.checked) {
+      document.getElementById('termsError').textContent = 'Debes aceptar los términos y condiciones.';
+      return;
+    }
+
+    if (!privacyCheckbox.checked) {
+      document.getElementById('privacyError').textContent = 'Debes aceptar la política de privacidad.';
+      return;
+    }
+
+    // Mostrar spinner
+    submitBtn.disabled = true;
+    document.querySelector('.btn-text').style.display = 'none';
+    document.getElementById('btnSpinner').style.display = 'inline-flex';
+
+    // Intentar registro
+    setTimeout(() => {
+      const result = registerUser(name, email, password);
+      
+      if (result.success) {
+        formMessage.className = 'form-message form-message--success';
+        formMessage.textContent = result.message;
+        
+        setTimeout(() => {
+          redirectAfterAuth();
+        }, 1500);
+      } else {
+        formMessage.className = 'form-message form-message--error';
+        formMessage.textContent = result.message;
+        
+        submitBtn.disabled = false;
+        document.querySelector('.btn-text').style.display = 'inline';
+        document.getElementById('btnSpinner').style.display = 'none';
+      }
+    }, 800);
+  });
+});
+</script>
+<script src="auth.js" defer></script>
+<script src="tradu.js"></script>
+</body>
+</html>
