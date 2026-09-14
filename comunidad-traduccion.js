@@ -96,7 +96,7 @@ const TRANSLATIONS = {
 };
 
 // ── Reverse map (EN → ES) built automatically ─────────────
-const TRANSLATIONS_REVERSE = Object.fromEntries(
+/*const TRANSLATIONS_REVERSE = Object.fromEntries(
   Object.entries(TRANSLATIONS).map(([es, en]) => [en, es])
 );
 
@@ -136,11 +136,11 @@ function applyTranslations(map) {
       if (val && map[val]) el[attr] = map[val];
     });
   });
-}
+}*/
 
 // ── Toggle handler ────────────────────────────────────────
-function toggleLanguage() {
-  isEnglish = !isEnglish;
+//function toggleLanguage() {
+  /*isEnglish = !isEnglish;
   applyTranslations(isEnglish ? TRANSLATIONS : TRANSLATIONS_REVERSE);
 
   // Update toggle button label
@@ -165,4 +165,4 @@ document.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("cleardrop-lang") === "en") {
     toggleLanguage();
   }
-});
+});*/
