@@ -1053,7 +1053,7 @@
    - Emite evento 'languagechange' con detail { lang }
    - El HTML esperado: <button id="langToggle" class="lang-toggle" aria-pressed="false">...</button>
 */
-(() => {
+/*(() => {
   const LANG_KEY = 'site_lang';
   const button = document.getElementById('langToggle');
   if (!button) return;
@@ -1130,5 +1130,5 @@
   } else {
     init(false);
   }
-})();
+})();*/
 })();
