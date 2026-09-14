@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════════════════
-   tra.js — ES ↔ EN toggle for ClearDrop (página Comunidad)
+   comunidad-traduccion.js — ES ↔ EN toggle for ClearDrop (página Comunidad)
    ═══════════════════════════════════════════════════════════ */
 
-// ── Translation map ───────────────────────────────────────
+// ── Translation map (ES → EN) ─────────────────────────────
 const TRANSLATIONS = {
   // NAVBAR
   "Inicio":         "Home",
@@ -53,32 +53,33 @@ const TRANSLATIONS = {
   "Hace 11 horas": "11 hours ago",
   "Entiendo tu frustración. Es importante que la comunidad se una para exigir mejores servicios. ¿Has intentado contactar a los representantes locales o a organizaciones de derechos humanos?":
     "I understand your frustration. It's important for the community to come together to demand better services. Have you tried contacting local representatives or human rights organizations?",
-  "Escribe una respuesta...": "Write a response...",  
-   
+  "Escribe una respuesta...": "Write a response...",
+
   // Publicación 2
   "Hace 21 horas": "21 hours ago",
   "Cuidado con nuestros recursos hídricos: Tenemos que protegerlos para no tener problemas con la falta de agua en nuestro país.":
     "Be careful with our water resources: We must protect them to avoid problems with water scarcity in our country.",
   "#agua #consejo #cuidado #recursoshídricos #futuroverde #sostenibilidad":
     "#water #tip #care #waterresources #greenfuture #sustainability",
-  "Escribe un comentario...": "Write a comment...", 
+  "Escribe un comentario...": "Write a comment...",
 
   // Publicación 3
   "¿Qué hago si mi agua sale con sedimentos?": "What should I do if my water comes out with sediments?",
   "He intentado de todo, y nunca se filtra al 100%.": "I've tried everything, and it never filters 100%.",
+
   // SIDEBAR
   "Categorías populares":         "Popular categories",
   "Top Colaboradores":            "Top contributors",
   "Ver todos los colaboradores":  "View all contributors",
 
   "Crear publicación": "Create post",
+
   // FOOTER
   "Conectando comunidades con soluciones de agua limpia para un Panamá sostenible.":
     "Connecting communities with clean water solutions for a sustainable Panama.",
   "Plataforma":       "Platform",
   "Mapa interactivo": "Interactive map",
   "Reportar fuga":    "Report a leak",
-  "Voluntariado":     "Volunteering",
   "Foros":            "Forums",
   "Eventos":          "Events",
   "Blog ambiental":   "Environmental blog",
@@ -95,101 +96,12 @@ const TRANSLATIONS = {
   "Reportar ahora": "Report now",
 };
 
-  /* lang-toggle.js
-   - Muestra EN / ES y cambia el icono al alternar
-   - Guarda selección en localStorage ('site_lang')
-   - Actualiza <html lang="...">
-   - Emite evento 'languagechange' con detail { lang }
-   - El HTML esperado: <button id="langToggle" class="lang-toggle" aria-pressed="false">...</button>
-*/
-(() => {
-  const LANG_KEY = 'site_lang';
-  const button = document.getElementById('langToggle');
-  if (!button) return;
-
-  const label = button.querySelector('.label');
-  const iconEn = button.querySelector('.icon--en');
-  const iconEs = button.querySelector('.icon--es');
-
-  // Aplica estado visual (clases) y atributos ARIA
-  function applyVisualState(lang) {
-    button.classList.toggle('is-en', lang === 'en');
-    button.classList.toggle('is-es', lang === 'es');
-    if (label) label.textContent = lang.toUpperCase();
-    button.setAttribute('aria-pressed', String(lang === 'es')); // ejemplo: pressed cuando es ES
-  }
-
-  // Guarda y emite evento
-  function finalizeLang(lang, save = true) {
-    try { document.documentElement.lang = lang; } catch (e) {}
-    applyVisualState(lang);
-    if (save) localStorage.setItem(LANG_KEY, lang);
-    document.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
-  }
-
-  // Detecta idioma inicial: localStorage -> atributo html -> navigator -> 'en'
-  function detectInitialLang() {
-    const saved = localStorage.getItem(LANG_KEY);
-    if (saved === 'es' || saved === 'en') return saved;
-    const docLang = (document.documentElement.lang || '').toLowerCase();
-    if (docLang.startsWith('es')) return 'es';
-    if (docLang.startsWith('en')) return 'en';
-    const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-    if (nav.startsWith('es')) return 'es';
-    return 'en';
-  }
-
-  // Inicializa el componente
-  function init(save = false) {
-    const lang = detectInitialLang();
-    finalizeLang(lang, save);
-  }
-
-  // Click para alternar
-  button.addEventListener('click', () => {
-    const current = localStorage.getItem(LANG_KEY) || (document.documentElement.lang || 'en');
-    const next = (current === 'es') ? 'en' : 'es';
-    finalizeLang(next, true);
-  });
-
-  // Permite alternar con Enter / Space cuando el botón tiene foco
-  button.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Enter' || ev.key === ' ') {
-      ev.preventDefault();
-      button.click();
-    }
-  });
-
-  // Opcional: ejemplo simple de traducción para elementos con data-i18n (puedes eliminarlo)
-  const i18n = {
-    en: { welcome: "Welcome", hello: "Hello world" },
-    es: { welcome: "Bienvenido", hello: "Hola mundo" }
-  };
-  function translatePage(lang) {
-    document.querySelectorAll('[data-i18n]').forEach(n => {
-      const key = n.getAttribute('data-i18n');
-      if (i18n[lang] && i18n[lang][key]) n.textContent = i18n[lang][key];
-    });
-  }
-  document.addEventListener('languagechange', (e) => translatePage(e.detail.lang));
-
-  // Arranque: si el DOM ya está listo, inicializa; si no, espera DOMContentLoaded
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => init(false));
-  } else {
-    init(false);
-  }
-})();
-
-// ── Reverse map (EN → ES) built automatically ─────────────
-/*const TRANSLATIONS_REVERSE = Object.fromEntries(
+// ── Reverse map (EN → ES), generado automáticamente ───────
+const TRANSLATIONS_REVERSE = Object.fromEntries(
   Object.entries(TRANSLATIONS).map(([es, en]) => [en, es])
 );
 
-// ── State ─────────────────────────────────────────────────
-let isEnglish = false;
-
-// ── Core walker ───────────────────────────────────────────
+// ── Recorre el DOM y sustituye los textos según el mapa ───
 function applyTranslations(map) {
   const SKIP = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT"]);
 
@@ -215,40 +127,109 @@ function applyTranslations(map) {
     }
   }
 
-  // Attributes (placeholder, title, aria-label, alt)
+  // Atributos (placeholder, title, aria-label, alt)
   document.querySelectorAll("[placeholder],[title],[aria-label],[alt]").forEach(el => {
     ["placeholder", "title", "ariaLabel", "alt"].forEach(attr => {
       const val = el[attr];
       if (val && map[val]) el[attr] = map[val];
     });
   });
-}*/
-
-// ── Toggle handler ────────────────────────────────────────
-//function toggleLanguage() {
-  /*isEnglish = !isEnglish;
-  applyTranslations(isEnglish ? TRANSLATIONS : TRANSLATIONS_REVERSE);
-
-  // Update toggle button label
-  const label = document.getElementById("langLabel");
-  if (label) label.textContent = isEnglish ? "Español" : "English";
-
-  const btn = document.getElementById("langToggle");
-  if (btn) {
-    btn.classList.toggle("is-en", isEnglish);
-    btn.setAttribute("aria-label", isEnglish ? "Cambiar a español" : "Switch to English");
-  }
-
-  // Persist preference (misma clave que translate.js, para sincronizar entre páginas)
-  localStorage.setItem("cleardrop-lang", isEnglish ? "en" : "es");
 }
 
-// ── Init ──────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("langToggle")?.addEventListener("click", toggleLanguage);
+/* lang-toggle.js
+   - Muestra EN / ES y cambia el icono al alternar
+   - Guarda selección en localStorage ('site_lang')
+   - Actualiza <html lang="...">
+   - Traduce el contenido de la página usando TRANSLATIONS / TRANSLATIONS_REVERSE
+   - Emite evento 'languagechange' con detail { lang }
+   - El HTML esperado: <button id="langToggle" class="lang-toggle" aria-pressed="false">...</button>
+*/
+(() => {
+  const LANG_KEY = 'site_lang';
+  const button = document.getElementById('langToggle');
+  if (!button) return;
 
-  // Restore saved preference
-  if (localStorage.getItem("cleardrop-lang") === "en") {
-    toggleLanguage();
+  const label = button.querySelector('.label');
+
+  // Aplica estado visual (clases) y atributos ARIA
+  function applyVisualState(lang) {
+    button.classList.toggle('is-en', lang === 'en');
+    button.classList.toggle('is-es', lang === 'es');
+    if (label) label.textContent = lang.toUpperCase();
+    button.setAttribute('aria-pressed', String(lang === 'es')); // ejemplo: pressed cuando es ES
   }
-});*/
+
+  // Traduce el contenido visible según el idioma de destino
+  function translateContent(lang) {
+    applyTranslations(lang === 'en' ? TRANSLATIONS : TRANSLATIONS_REVERSE);
+  }
+
+  // Guarda, traduce y emite evento
+  function finalizeLang(lang, save = true) {
+    try { document.documentElement.lang = lang; } catch (e) {}
+    applyVisualState(lang);
+    translateContent(lang);
+    if (save) localStorage.setItem(LANG_KEY, lang);
+    document.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
+  }
+
+  // Detecta idioma inicial: localStorage -> atributo html -> navigator -> 'es'
+  function detectInitialLang() {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === 'es' || saved === 'en') return saved;
+    const docLang = (document.documentElement.lang || '').toLowerCase();
+    if (docLang.startsWith('es')) return 'es';
+    if (docLang.startsWith('en')) return 'en';
+    const nav = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
+    if (nav.startsWith('en')) return 'en';
+    return 'es';
+  }
+
+  // Inicializa el componente
+  function init(save = false) {
+    const lang = detectInitialLang();
+    finalizeLang(lang, save);
+  }
+
+  // Click para alternar
+  button.addEventListener('click', () => {
+    const current = localStorage.getItem(LANG_KEY) || (document.documentElement.lang || 'es');
+    const next = (current === 'es') ? 'en' : 'es';
+    finalizeLang(next, true);
+  });
+
+  // Permite alternar con Enter / Space cuando el botón tiene foco
+  button.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      button.click();
+    }
+  });
+
+  // El feed de publicaciones (#communityFeed) se genera dinámicamente con
+  // script-comunidad.js (al filtrar, buscar o crear una publicación). Cuando
+  // eso ocurre, el contenido vuelve a insertarse en español. Este observer
+  // reaplica la traducción automáticamente si el idioma activo es inglés.
+  function watchFeedForReRenders() {
+    const feedEl = document.getElementById('communityFeed');
+    if (!feedEl || typeof MutationObserver === 'undefined') return;
+
+    const observer = new MutationObserver(() => {
+      const current = localStorage.getItem(LANG_KEY) || (document.documentElement.lang || 'es');
+      if (current === 'en') applyTranslations(TRANSLATIONS);
+    });
+
+    observer.observe(feedEl, { childList: true, subtree: true });
+  }
+
+  // Arranque: si el DOM ya está listo, inicializa; si no, espera DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      init(false);
+      watchFeedForReRenders();
+    });
+  } else {
+    init(false);
+    watchFeedForReRenders();
+  }
+})();
